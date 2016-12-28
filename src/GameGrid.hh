@@ -38,6 +38,8 @@ private:
   void buildGroup(Cell *aCell);
   void extendGroup(Cell *aCell,int aColor,int aGroup);
 
+  void deleteGroupAt(int aRow,int aCol);
+
   void printBoard(const char *aHeader = NULL);
 };
 

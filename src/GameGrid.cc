@@ -223,6 +223,15 @@ void GameGrid::extendGroup(Cell *aCell,int aColor,int aGroup)
   }
 }
 
+void GameGrid::deleteGroupAt(int aRow,int aCol)
+{
+  if (aRow < 0 || aRow >= ROWS || aCol < 0 || aCol >= COLS)
+  {
+    std::cout "Invalid row,col: " << aRow << "," << aCol << std::endl;
+    exit(1);
+  }
+}
+
 void GameGrid::printBoard(const char *aHeader)
 {
   if (aHeader != NULL)
