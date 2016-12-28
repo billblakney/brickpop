@@ -3,6 +3,8 @@
 
 Cell::Cell()
 {
+  color = -1;
+  group = 0;
 }
 
 Cell::~Cell()

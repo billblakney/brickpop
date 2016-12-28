@@ -10,7 +10,7 @@ class GameGrid
 {
 public:
 
-  Cell *grid[ROWS][COLS];
+  Cell grid[ROWS][COLS];
 
   GameGrid();
 
@@ -24,6 +24,16 @@ private:
 
   int groupSeqNum;
 
+  Location getLocationNorth(Location aLocation);
+  Location getLocationEast(Location aLocation);
+  Location getLocationSouth(Location aLocation);
+  Location getLocationWest(Location aLocation);
+
+  Location getLocationNorth(int aRow,int aCol);
+  Location getLocationEast(int aRow,int aCol);
+  Location getLocationSouth(int aRow,int aCol);
+  Location getLocationWest(int aRow,int aCol);
+
   bool isTopLeftCorner(int aRow,int aCol);
   bool isTopRightCorner(int aRow,int aCol);
   bool isBottomLeftCorner(int aRow,int aCol);
@@ -33,12 +43,12 @@ private:
   bool isLeftCol(int aRow,int aCol);
   bool isRightCol(int aRow,int aCol);
 
-  void setInitialNeighbors();
+//  void setInitialNeighbors();
 
-  void buildGroup(Cell *aCell);
-  void extendGroup(Cell *aCell,int aColor,int aGroup);
+  void buildGroup(Location aLocation);
+  void extendGroup(Location aLocation,int aColor,int aGroup);
 
-  void deleteGroupAt(int aRow,int aCol);
+  void deleteGroupAt(Location aLocation);
 
   void printBoard(const char *aHeader = NULL);
 };

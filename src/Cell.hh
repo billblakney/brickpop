@@ -3,7 +3,6 @@
 
 #include <string>
 #include "Location.hh"
-#include "Neighbors.hh"
 
 #define NO_GROUP 0
 
@@ -15,13 +14,8 @@ public:
 
   int group;
 
-  Location origLocation;
-  Neighbors origNeighbors;
-
-  Location location;
-  Neighbors neighbors;
-
   Cell();
+
   virtual ~Cell();
 
   std::string toString();

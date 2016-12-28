@@ -24,3 +24,11 @@ Location::Location(int aRow,int aCol)
 Location::~Location()
 {
 }
+
+bool Location::isValid()
+{
+  if (row != -1 && col != -1)
+    return true;
+  else
+    return false;
+}

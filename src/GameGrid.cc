@@ -18,26 +18,11 @@ void GameGrid::buildGrid()
   {
     for (int c = 0; c < COLS; c++)
     {
-      Cell *tCell = new Cell();
-
-      tCell->color = c; //TODO
-
-      tCell->group = 0;
-
-      Location tLocation(r,c);
-      Neighbors tNeighbors(NULL,NULL,NULL,NULL);
-
-      tCell->origLocation = tLocation;
-      tCell->origNeighbors = tNeighbors;
-
-      tCell->location = tLocation;
-      tCell->neighbors = tNeighbors; // will get overwrote later
-
-      grid[r][c] = tCell;
+      Cell &tCell = grid[r][c];
+      tCell.color = c; //TODO
+      tCell.group = 0;
     }
   }
-
-  setInitialNeighbors();
 
   /*
    * Set the groups.
@@ -48,11 +33,11 @@ void GameGrid::buildGrid()
   {
     for (int c = 0; c < COLS; c++)
     {
-      Cell *tCell = grid[r][c];
-      if (tCell->group == NO_GROUP)
+      Cell &tCell = grid[r][c];
+      if (tCell.group == NO_GROUP)
       {
-        tCell->group = ++groupSeqNum;
-        buildGroup(tCell);
+        tCell.group = ++groupSeqNum;
+        buildGroup(Location(r,c));
       }
     }
   }
@@ -60,65 +45,74 @@ void GameGrid::buildGrid()
   printBoard("\nafter groups");
 }
 
-void GameGrid::setInitialNeighbors()
+Location GameGrid::getLocationNorth(Location aLocation)
 {
-  for (int r = 0; r < ROWS; r++)
+  return getLocationNorth(aLocation.row,aLocation.col);
+}
+
+Location GameGrid::getLocationEast(Location aLocation)
+{
+  return getLocationEast(aLocation.row,aLocation.col);
+}
+
+Location GameGrid::getLocationSouth(Location aLocation)
+{
+  return getLocationSouth(aLocation.row,aLocation.col);
+}
+
+Location GameGrid::getLocationWest(Location aLocation)
+{
+  return getLocationWest(aLocation.row,aLocation.col);
+}
+
+Location GameGrid::getLocationNorth(int aRow,int aCol)
+{
+  if (isTopRow(aRow, aCol))
   {
-    for (int c = 0; c < COLS; c++)
-    {
-      Cell *tCell = grid[r][c];
-
-      /*
-       * Set neighbors for the general case, then clean up for the special
-       * cases.
-       */
-      tCell->neighbors.top = grid[r-1][c];
-      tCell->neighbors.right = grid[r][c+1];
-      tCell->neighbors.bottom = grid[r+1][c];
-      tCell->neighbors.left = grid[r][c-1];
-
-      if (isTopLeftCorner(r,c)) // 0,0
-      {
-        tCell->neighbors.top = NULL;
-        tCell->neighbors.left = NULL;
-      }
-      else if (isTopRightCorner(r,c)) // 0,COLS-1
-      {
-        tCell->neighbors.top = NULL;
-        tCell->neighbors.right = NULL;
-      }
-      else if (isBottomLeftCorner(r,c)) // ROWS-1,0
-      {
-        tCell->neighbors.bottom = NULL;
-        tCell->neighbors.left = NULL;
-      }
-      else if (isBottomRightCorner(r,c)) // ROWS-1,COLS-1
-      {
-        tCell->neighbors.right = NULL;
-        tCell->neighbors.bottom = NULL;
-      }
-      else if (isTopRow(r,c))
-      {
-        tCell->neighbors.top = NULL;
-      }
-      else if (isBottomRow(r,c))
-      {
-        tCell->neighbors.bottom = NULL;
-      }
-      else if (isLeftCol(r,c))
-      {
-        tCell->neighbors.left = NULL;
-      }
-      else if (isRightCol(r,c))
-      {
-        tCell->neighbors.right = NULL;
-      }
-      else
-      {
-      }
-    }
+    return Location();
+  }
+  else
+  {
+    return Location(aRow-1,aCol);
   }
 }
+
+Location GameGrid::getLocationEast(int aRow,int aCol)
+{
+  if (isRightCol(aRow, aCol))
+  {
+    return Location();
+  }
+  else
+  {
+    return Location(aRow,aCol+1);
+  }
+}
+
+Location GameGrid::getLocationSouth(int aRow,int aCol)
+{
+  if (isBottomRow(aRow, aCol))
+  {
+    return Location();
+  }
+  else
+  {
+    return Location(aRow+1,aCol);
+  }
+}
+
+Location GameGrid::getLocationWest(int aRow,int aCol)
+{
+  if (isLeftCol(aRow, aCol))
+  {
+    return Location();
+  }
+  else
+  {
+    return Location(aRow,aCol-1);
+  }
+}
+
 
 bool GameGrid::isTopLeftCorner(int aRow,int aCol)
 {
@@ -188,48 +182,57 @@ void GameGrid::resetGrid()
 {
 }
 
-void GameGrid::buildGroup(Cell *aCell)
+void GameGrid::buildGroup(Location aLocation)
 {
-  int tColor = aCell->color;
-  int tGroup = aCell->group;
-//  std::cout << "building group for cell x,y,color,group: "
+  Cell &tCell = grid[aLocation.row][aLocation.col];
+
+  int tColor = tCell.color;
+  int tGroup = tCell.group;
+
+//  std::cout << "building group for cell row,col,color,group: "
 //      << aCell->location.row << "," << aCell->location.col << ","
 //      << aCell->color << "," << aCell->group << std::endl;
 
-  Cell *tCell;
+  Location tLocation;
 
-  tCell = aCell->neighbors.top;
-  extendGroup(tCell,tColor,tGroup);
+  tLocation = getLocationNorth(aLocation);
+  extendGroup(tLocation,tColor,tGroup);
 
-  tCell = aCell->neighbors.right;
-  extendGroup(tCell,tColor,tGroup);
+  tLocation = getLocationEast(aLocation);
+  extendGroup(tLocation,tColor,tGroup);
 
-  tCell = aCell->neighbors.bottom;
-  extendGroup(tCell,tColor,tGroup);
+  tLocation = getLocationSouth(aLocation);
+  extendGroup(tLocation,tColor,tGroup);
 
-  tCell = aCell->neighbors.left;
-  extendGroup(tCell,tColor,tGroup);
+  tLocation = getLocationWest(aLocation);
+  extendGroup(tLocation,tColor,tGroup);
 }
 
-void GameGrid::extendGroup(Cell *aCell,int aColor,int aGroup)
+void GameGrid::extendGroup(Location aLocation,int aColor,int aGroup)
 {
-  if (aCell != NULL && aCell->group == NO_GROUP)
+  if (aLocation.isValid())
   {
-    if (aCell->color == aColor)
+    Cell &tCell = grid[aLocation.row][aLocation.col];
+    if (tCell.group == NO_GROUP)
     {
-      aCell->group = aGroup;
-      buildGroup(aCell);
+      if (tCell.color == aColor)
+      {
+        tCell.group = aGroup;
+        buildGroup(aLocation);
+      }
     }
   }
 }
 
-void GameGrid::deleteGroupAt(int aRow,int aCol)
+void GameGrid::deleteGroupAt(Location aLocation)
 {
+#if 0
   if (aRow < 0 || aRow >= ROWS || aCol < 0 || aCol >= COLS)
   {
     std::cout "Invalid row,col: " << aRow << "," << aCol << std::endl;
     exit(1);
   }
+#endif
 }
 
 void GameGrid::printBoard(const char *aHeader)
@@ -242,8 +245,8 @@ void GameGrid::printBoard(const char *aHeader)
   {
     for (int c = 0; c < COLS; c++)
     {
-      Cell *tCell = grid[r][c];
-      std::cout << tCell->toString() << " ";
+      Cell &tCell = grid[r][c];
+      std::cout << tCell.toString() << " ";
     }
     std::cout << std::endl;
   }
