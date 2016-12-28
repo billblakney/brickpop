@@ -33,16 +33,22 @@ void GameGrid::buildGrid()
   {
     for (int c = 0; c < COLS; c++)
     {
+      Location tLocation(r,c);
       Cell &tCell = grid[r][c];
       if (tCell.group == NO_GROUP)
       {
-        tCell.group = ++groupSeqNum;
-        buildGroup(Location(r,c));
+        int tGroupIdx = ++groupSeqNum;
+        tCell.group = tGroupIdx;
+        Group *tGroup = new Group(tGroupIdx);
+        tGroup->locations.push_back(tLocation);
+        buildGroup(tLocation,tGroup);
+        groups.push_back(tGroup);
       }
     }
   }
 
   printBoard("\nafter groups");
+  printGroups("\nGroups:");
 }
 
 Location GameGrid::getLocationNorth(Location aLocation)
@@ -182,12 +188,11 @@ void GameGrid::resetGrid()
 {
 }
 
-void GameGrid::buildGroup(Location aLocation)
+void GameGrid::buildGroup(Location aLocation,Group *aGroup)
 {
   Cell &tCell = grid[aLocation.row][aLocation.col];
 
   int tColor = tCell.color;
-  int tGroup = tCell.group;
 
 //  std::cout << "building group for cell row,col,color,group: "
 //      << aCell->location.row << "," << aCell->location.col << ","
@@ -196,19 +201,19 @@ void GameGrid::buildGroup(Location aLocation)
   Location tLocation;
 
   tLocation = getLocationNorth(aLocation);
-  extendGroup(tLocation,tColor,tGroup);
+  extendGroup(tLocation,tColor,aGroup);
 
   tLocation = getLocationEast(aLocation);
-  extendGroup(tLocation,tColor,tGroup);
+  extendGroup(tLocation,tColor,aGroup);
 
   tLocation = getLocationSouth(aLocation);
-  extendGroup(tLocation,tColor,tGroup);
+  extendGroup(tLocation,tColor,aGroup);
 
   tLocation = getLocationWest(aLocation);
-  extendGroup(tLocation,tColor,tGroup);
+  extendGroup(tLocation,tColor,aGroup);
 }
 
-void GameGrid::extendGroup(Location aLocation,int aColor,int aGroup)
+void GameGrid::extendGroup(Location aLocation,int aColor,Group *aGroup)
 {
   if (aLocation.isValid())
   {
@@ -217,8 +222,9 @@ void GameGrid::extendGroup(Location aLocation,int aColor,int aGroup)
     {
       if (tCell.color == aColor)
       {
-        tCell.group = aGroup;
-        buildGroup(aLocation);
+        tCell.group = aGroup->id;
+        aGroup->locations.push_back(aLocation);
+        buildGroup(aLocation,aGroup);
       }
     }
   }
@@ -249,5 +255,17 @@ void GameGrid::printBoard(const char *aHeader)
       std::cout << tCell.toString() << " ";
     }
     std::cout << std::endl;
+  }
+}
+
+void GameGrid::printGroups(const char *aHeader)
+{
+  if (aHeader != NULL)
+  {
+    std::cout << aHeader << std::endl;
+  }
+  for (int i = 0; i < groups.size(); i++)
+  {
+    std::cout << groups[i]->toString() << std::endl;
   }
 }

@@ -1,6 +1,8 @@
 #ifndef LOCATION_HH_
 #define LOCATION_HH_
 
+#include <string>
+
 class Location
 {
 public:
@@ -11,6 +13,7 @@ public:
   Location(const Location &aLocation);
   virtual ~Location();
   bool isValid();
+  std::string toString();
 };
 
 #endif /* LOCATION_HH_ */

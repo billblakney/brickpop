@@ -4,6 +4,8 @@
 #include <string>
 #include "Location.hh"
 
+#define NUM_COLORS 4
+
 #define NO_GROUP 0
 
 class Cell

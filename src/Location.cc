@@ -1,3 +1,4 @@
+#include <sstream>
 #include "Location.hh"
 
 Location::Location()
@@ -31,4 +32,11 @@ bool Location::isValid()
     return true;
   else
     return false;
+}
+
+std::string Location::toString()
+{
+  std::stringstream tStr;
+  tStr << "(" << row << "," << col << ")";
+  return tStr.str();
 }

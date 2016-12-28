@@ -1,7 +1,9 @@
 #ifndef GAMEGRID_HH_
 #define GAMEGRID_HH_
 
+#include <vector>
 #include "Cell.hh"
+#include "Group.hh"
 
 #define ROWS 10
 #define COLS 10
@@ -11,6 +13,8 @@ class GameGrid
 public:
 
   Cell grid[ROWS][COLS];
+
+  std::vector<Group*> groups;
 
   GameGrid();
 
@@ -45,12 +49,13 @@ private:
 
 //  void setInitialNeighbors();
 
-  void buildGroup(Location aLocation);
-  void extendGroup(Location aLocation,int aColor,int aGroup);
+  void buildGroup(Location aLocation,Group *aGroup);
+  void extendGroup(Location aLocation,int aColor,Group *aGroup);
 
   void deleteGroupAt(Location aLocation);
 
   void printBoard(const char *aHeader = NULL);
+  void printGroups(const char *aHeader = NULL);
 };
 
 #endif /* GAMEGRID_HH_ */
