@@ -40,7 +40,7 @@ void GameGrid::buildGrid()
         int tGroupIdx = ++groupSeqNum;
         tCell.group = tGroupIdx;
         Group *tGroup = new Group(tGroupIdx);
-        tGroup->locations.push_back(tLocation);
+        tGroup->addLocation(tLocation);
         buildGroup(tLocation,tGroup);
         groups.push_back(tGroup);
       }
@@ -223,7 +223,7 @@ void GameGrid::extendGroup(Location aLocation,int aColor,Group *aGroup)
       if (tCell.color == aColor)
       {
         tCell.group = aGroup->id;
-        aGroup->locations.push_back(aLocation);
+        aGroup->addLocation(aLocation);
         buildGroup(aLocation,aGroup);
       }
     }

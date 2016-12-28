@@ -5,13 +5,17 @@
 #include <vector>
 #include "Location.hh"
 
+#define COLS 10 //TODO
+
 class Group
 {
 public:
   int id;
+  int boundaries[COLS][2]; //TODO note on indexing
   std::vector<Location> locations;
   Group(int id);
   virtual ~Group();
+  void addLocation(Location aLocation);
   std::string toString();
 };
 
