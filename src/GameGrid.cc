@@ -40,8 +40,8 @@ snapshot.groups = buildGroups(snapshot);
       << snapshot.getNumTrivialGroups() << std::endl;
 
   Snapshot tSnapshot1 = snapshot;
-  deleteGroupAt(tSnapshot1,Location(5,5));
-//  deleteGroupAt(tSnapshot1,Location(5,2));
+  deleteGroupAt(tSnapshot1,tSnapshot1.groups,Location(5,5));
+//  deleteGroupAt(tSnapshot1,tSnapshot1.groups,Location(5,2));
   clearGroups(tSnapshot1);
 tSnapshot1.groups = buildGroups(tSnapshot1);
   printBoard(tSnapshot1,"\nnew groups after delete and rebuild groups");
@@ -270,9 +270,9 @@ void GameGrid::extendGroup(Snapshot &aSnapshot,Location aLocation,int aColor,Gro
   }
 }
 
-void GameGrid::deleteGroupAt(Snapshot &aSnapshot,Location aLocation)
+void GameGrid::deleteGroupAt(Snapshot &aSnapshot,std::vector<Group> &aGroups,Location aLocation)
 {
-  Group tGroup = getGroupAt(aSnapshot.groups,aLocation);
+  Group tGroup = getGroupAt(aGroups,aLocation);
 //  if (tGroup == NULL)
 //  {
 //    std::cout << "ERROR: Couldn't find group at " << aLocation.toString() << std::endl;
@@ -365,14 +365,14 @@ void GameGrid::printBoard(Snapshot &aSnapshot,const char *aHeader)
   }
 }
 
-void GameGrid::printGroups(const char *aHeader)
+void GameGrid::printGroups(std::vector<Group> &aGroups,const char *aHeader)
 {
   if (aHeader != NULL)
   {
     std::cout << aHeader << std::endl;
   }
-  for (int i = 0; i < snapshot.groups.size(); i++)
+  for (int i = 0; i < aGroups.size(); i++)
   {
-    std::cout << snapshot.groups[i].toString() << std::endl;
+    std::cout << aGroups[i].toString() << std::endl;
   }
 }

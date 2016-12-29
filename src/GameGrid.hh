@@ -51,13 +51,13 @@ private:
   void buildGroup(Snapshot &aSnapshot,Location aLocation,Group &aGroup);
   void extendGroup(Snapshot &aSnapshot,Location aLocation,int aColor,Group &aGroup);
 
-  void deleteGroupAt(Snapshot &aSnapshot,Location aLocation);
+  void deleteGroupAt(Snapshot &aSnapshot,std::vector<Group> &aGroup,Location aLocation);
   void deleteGroup(Snapshot &aSnapshot,Group &aGroup);
   Group getGroupAt(std::vector<Group> &aGroups,Location aLocation);
   int getColorAt(Snapshot &aSnapshot,Location aLocation);
 
   void printBoard(Snapshot &aSnapshot,const char *aHeader = NULL);
-  void printGroups(const char *aHeader = NULL);
+  void printGroups(std::vector<Group> &aGroups,const char *aHeader = NULL);
 };
 
 #endif /* GAMEGRID_HH_ */
