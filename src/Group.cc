@@ -16,22 +16,6 @@ Group::~Group()
 void Group::addLocation(Location aLocation)
 {
   locations.push_back(aLocation);
-#ifdef OLD
-  int tCol = aLocation.col;
-  int tRow = aLocation.row;
-
-  int &tCurrentBottom = boundaries[tCol][0];
-  if (tCurrentBottom == -1 || tCurrentBottom < tRow)
-  {
-    tCurrentBottom = tRow;
-  }
-
-  int &tCurrentTop = boundaries[tCol][1];
-  if (tCurrentTop == -1 || tCurrentTop > tRow)
-  {
-    tCurrentTop = tRow;
-  }
-#endif
 }
 
 bool Group::contains(Location aLocation)
@@ -58,25 +42,6 @@ std::vector<int> Group::getRowsForCol(int aCol)
   }
   return tCols;
 }
-
-#ifdef OLD
-int Group::getFirstToDeleteAtCol(int aCol)
-{
-  return boundaries[aCol][0];
-}
-
-int Group::getNumToDeleteAtCol(int aCol)
-{
-  if (boundaries[aCol][0] != -1)
-  {
-    return (boundaries[aCol][0] - boundaries[aCol][1] + 1);
-  }
-  else
-  {
-    return 0;
-  }
-}
-#endif
 
 std::string Group::toString()
 {

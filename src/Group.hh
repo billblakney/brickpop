@@ -18,10 +18,6 @@ public:
   void addLocation(Location aLocation);
   bool contains(Location aLocation);
   std::vector<int> getRowsForCol(int aCol);
-#ifdef OLD
-  int getFirstToDeleteAtCol(int aCol);
-  int getNumToDeleteAtCol(int aCol);
-#endif
   std::string toString();
 };
 
