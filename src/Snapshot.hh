@@ -20,6 +20,14 @@ public:
   int getNumTrivialGroups();
 
   int getNumNonTrivialGroups();
+
+  bool isColumnEmpty(int aCol);
+
+  void normalizeColumns();
+
+private:
+
+  void deleteColumn(int aCol);
 };
 
 #endif /* SNAPSHOT_HH_ */

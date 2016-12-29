@@ -40,7 +40,8 @@ void GameGrid::buildGrid()
       << snapshot.getNumTrivialGroups() << std::endl;
 
   Snapshot tSnapshot1 = snapshot;
-  deleteGroupAt(tSnapshot1,Location(5,5));
+//  deleteGroupAt(tSnapshot1,Location(5,5));
+  deleteGroupAt(tSnapshot1,Location(5,2));
   clearGroups(tSnapshot1);
   buildGroups(tSnapshot1);
   printBoard(tSnapshot1,"\nnew groups after delete and rebuild groups");
@@ -296,6 +297,8 @@ void GameGrid::deleteGroupAt(Snapshot &aSnapshot,Location aLocation)
       }
     }
   }
+
+  aSnapshot.normalizeColumns();
 }
 
 int GameGrid::getColorAt(Snapshot &aSnapshot,Location aLocation)
