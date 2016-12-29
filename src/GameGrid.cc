@@ -282,9 +282,14 @@ void GameGrid::deleteGroupAt(Snapshot &aSnapshot,Location aLocation)
     std::cout << "Deleting group with id " << tGroup.id << " at " << aLocation.toString() << std::endl;
 //  }
 
+    deleteGroup(aSnapshot,tGroup);
+}
+
+void GameGrid::deleteGroup(Snapshot &aSnapshot,Group &aGroup)
+{
   for (int tCol = 0; tCol < COLS; tCol++)
   {
-    std::vector<int> tRowsToDelete = tGroup.getRowsForCol(tCol);
+    std::vector<int> tRowsToDelete = aGroup.getRowsForCol(tCol);
 
     std::vector<int>::iterator tIter;
     for (tIter = tRowsToDelete.begin(); tIter != tRowsToDelete.end(); tIter++ )

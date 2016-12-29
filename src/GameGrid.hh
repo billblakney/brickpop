@@ -52,6 +52,7 @@ private:
   void extendGroup(Snapshot &aSnapshot,Location aLocation,int aColor,Group &aGroup);
 
   void deleteGroupAt(Snapshot &aSnapshot,Location aLocation);
+  void deleteGroup(Snapshot &aSnapshot,Group &aGroup);
   Group getGroupAt(std::vector<Group> &aGroups,Location aLocation);
   int getColorAt(Snapshot &aSnapshot,Location aLocation);
 
