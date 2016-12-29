@@ -7,8 +7,8 @@ obj = $(src:.cc=.o)
 
 #LDFLAGS = -lGL -lglut -lpng -lz -lm
 
-brickpop: $(obj)
-	$(CC) -o $@ $^ $(LDFLAGS)
+all: $(obj)
+	$(CC) -o brickpop $^ $(LDFLAGS)
 
 .PHONY: clean
 
