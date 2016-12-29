@@ -42,7 +42,7 @@ snapshot.groups = buildGroups(snapshot);
   Snapshot tSnapshot1 = snapshot;
   deleteGroupAt(tSnapshot1,tSnapshot1.groups,Location(5,5));
 //  deleteGroupAt(tSnapshot1,tSnapshot1.groups,Location(5,2));
-  clearGroups(tSnapshot1);
+  clearGroups(tSnapshot1,tSnapshot1.groups);
 tSnapshot1.groups = buildGroups(tSnapshot1);
   printBoard(tSnapshot1,"\nnew groups after delete and rebuild groups");
   std::cout << "num groups nontriv,triv: "
@@ -50,7 +50,7 @@ tSnapshot1.groups = buildGroups(tSnapshot1);
       << tSnapshot1.getNumTrivialGroups() << std::endl;
 }
 
-void GameGrid::clearGroups(Snapshot &aSnapshot)
+void GameGrid::clearGroups(Snapshot &aSnapshot,std::vector<Group> &aGroups)
 {
   groupSeqNum = NO_GROUP; //TODO
 
@@ -58,7 +58,7 @@ void GameGrid::clearGroups(Snapshot &aSnapshot)
     for (int c = 0; c < COLS; c++)
       aSnapshot.grid[r][c].group = NO_GROUP;
 
-  aSnapshot.groups.clear();
+  aGroups.clear();
 }
 
 std::vector<Group> GameGrid::buildGroups(Snapshot &aSnapshot)

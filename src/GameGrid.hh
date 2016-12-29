@@ -46,7 +46,7 @@ private:
 
 //  void setInitialNeighbors();
 
-  void clearGroups(Snapshot &aSnapshot);
+  void clearGroups(Snapshot &aSnapshot,std::vector<Group> &aGroups);
   std::vector<Group> buildGroups(Snapshot &aSnapshot);
   void buildGroup(Snapshot &aSnapshot,Location aLocation,Group &aGroup);
   void extendGroup(Snapshot &aSnapshot,Location aLocation,int aColor,Group &aGroup);
