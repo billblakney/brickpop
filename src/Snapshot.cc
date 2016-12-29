@@ -13,36 +13,6 @@ bool Snapshot::isColumnEmpty(int aCol)
   return (grid[ROWS-1][aCol].empty ? true:false);
 }
 
-int Snapshot::getNumTrivialGroups()
-{
-  int count = 0;
-
-  std::vector<Group>::iterator tIter;
-  for (tIter = groups.begin(); tIter != groups.end(); tIter++)
-  {
-    if (tIter->locations.size() == 1)
-    {
-      count++;
-    }
-  }
-  return count;
-}
-
-int Snapshot::getNumNonTrivialGroups()
-{
-  int count = 0;
-
-  std::vector<Group>::iterator tIter;
-  for (tIter = groups.begin(); tIter != groups.end(); tIter++)
-  {
-    if (tIter->locations.size() > 1)
-    {
-      count++;
-    }
-  }
-  return count;
-}
-
 void Snapshot::normalizeColumns()
 {
   for (int tCol = COLS-2; tCol >= 0; tCol--)

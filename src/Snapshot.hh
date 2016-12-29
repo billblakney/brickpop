@@ -3,7 +3,7 @@
 
 #include "brickpop_const.h"
 #include "Cell.hh"
-#include "Group.hh"
+#include "GroupList.hh"
 
 class Snapshot
 {
@@ -11,15 +11,12 @@ public:
 
   Cell grid[ROWS][COLS];
 
-  std::vector<Group> groups;
+//  std::vector<Group> groups;
+  GroupList groupList;
 
   Snapshot();
 
   virtual ~Snapshot();
-
-  int getNumTrivialGroups();
-
-  int getNumNonTrivialGroups();
 
   bool isColumnEmpty(int aCol);
 
