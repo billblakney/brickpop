@@ -312,6 +312,8 @@ int GameGrid::getColorAt(Snapshot &aSnapshot,Location aLocation)
 
 Group GameGrid::getGroupAt(Location aLocation)
 {
+  Group tGroup;
+
   int tRow = aLocation.row;
   int tCol = aLocation.col;
 
@@ -320,11 +322,18 @@ Group GameGrid::getGroupAt(Location aLocation)
   {
     if (tIter->contains(aLocation))
     {
-      return *tIter;
+      tGroup = *tIter;
     }
   }
-  std::cout << "ERROR: couldn't get group at "
-      << tRow << "," << tCol << std::endl;
+
+  if (tGroup.isEmpty())
+  {
+    std::cout << "ERROR: couldn't get group at "
+        << tRow << "," << tCol << std::endl;
+    exit(1);
+  }
+
+  return tGroup;
 }
 
 void GameGrid::printBoard(Snapshot &aSnapshot,const char *aHeader)

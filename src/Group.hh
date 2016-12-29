@@ -11,10 +11,11 @@ class Group
 {
 public:
   int id;
-  int boundaries[COLS][2]; //TODO note on indexing
   std::vector<Location> locations;
+  Group();
   Group(int id);
   virtual ~Group();
+  bool isEmpty();
   void addLocation(Location aLocation);
   bool contains(Location aLocation);
   std::vector<int> getRowsForCol(int aCol);

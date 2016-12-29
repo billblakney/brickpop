@@ -1,16 +1,23 @@
 #include <sstream>
 #include "Group.hh"
 
+Group::Group()
+{
+  id = -1;
+}
+
 Group::Group(int aId)
 {
   id = aId;
-  for (int i = 0; i < COLS; i++)
-    for (int j = 0; j < 2; j++)
-      boundaries[i][j] = -1;
 }
 
 Group::~Group()
 {
+}
+
+bool Group::isEmpty()
+{
+  return ((locations.size()==0) ? true:false);
 }
 
 void Group::addLocation(Location aLocation)
@@ -52,11 +59,6 @@ std::string Group::toString()
   {
     Location tLocation = *tIter;
     tStr << " " << tLocation.toString();
-  }
-  tStr << std::endl;
-  for (int i = 0; i < COLS; i++)
-  {
-    tStr << "col" << i << " bot,top: " << boundaries[i][0] << ", " << boundaries[i][1] << std::endl;
   }
   return tStr.str();
 }
