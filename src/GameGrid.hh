@@ -5,14 +5,13 @@
 #include "brickpop_const.h"
 #include "Cell.hh"
 #include "Group.hh"
+#include "Snapshot.hh"
 
 class GameGrid
 {
 public:
 
-  Cell grid[ROWS][COLS];
-
-  std::vector<Group> groups;
+  Snapshot snapshot;
 
   GameGrid();
 
