@@ -39,8 +39,9 @@ void GameGrid::buildGrid()
   printBoard("\nafter delete");
 
   clearGroups();
+  printBoard("\nnew groups after delete and clear");
   buildGroups();
-  printBoard("\nnew groups after delete");
+  printBoard("\nnew groups after delete and rebuild groups");
 }
 
 void GameGrid::clearGroups()
@@ -51,12 +52,13 @@ void GameGrid::clearGroups()
     for (int c = 0; c < COLS; c++)
       grid[r][c].group = NO_GROUP;
 
-  std::vector<Group*>::iterator tIter;
-  for (tIter = groups.begin(); tIter != groups.end(); tIter++)
-  {
-    Group *tGroup = *tIter;
-    delete tGroup;
-  }
+//TODO rm
+//  std::vector<Group*>::iterator tIter;
+//  for (tIter = groups.begin(); tIter != groups.end(); tIter++)
+//  {
+//    Group *tGroup = *tIter;
+//    delete tGroup;
+//  }
   groups.clear();
 }
 
@@ -68,12 +70,12 @@ void GameGrid::buildGroups()
     {
       Location tLocation(r,c);
       Cell &tCell = grid[r][c];
-      if (tCell.group == NO_GROUP)
+      if (!tCell.empty && tCell.group == NO_GROUP)
       {
         int tGroupIdx = ++groupSeqNum;
         tCell.group = tGroupIdx;
-        Group *tGroup = new Group(tGroupIdx);
-        tGroup->addLocation(tLocation);
+        Group tGroup(tGroupIdx);
+        tGroup.addLocation(tLocation);
         buildGroup(tLocation,tGroup);
         groups.push_back(tGroup);
       }
@@ -218,9 +220,14 @@ void GameGrid::resetGrid()
 {
 }
 
-void GameGrid::buildGroup(Location aLocation,Group *aGroup)
+void GameGrid::buildGroup(Location aLocation,Group &aGroup)
 {
   Cell &tCell = grid[aLocation.row][aLocation.col];
+
+  if (tCell.empty)
+  {
+    return;
+  }
 
   int tColor = tCell.color;
 
@@ -243,17 +250,17 @@ void GameGrid::buildGroup(Location aLocation,Group *aGroup)
   extendGroup(tLocation,tColor,aGroup);
 }
 
-void GameGrid::extendGroup(Location aLocation,int aColor,Group *aGroup)
+void GameGrid::extendGroup(Location aLocation,int aColor,Group &aGroup)
 {
   if (aLocation.isValid())
   {
     Cell &tCell = grid[aLocation.row][aLocation.col];
-    if (tCell.group == NO_GROUP)
+    if (!tCell.empty && tCell.group == NO_GROUP)
     {
       if (tCell.color == aColor)
       {
-        tCell.group = aGroup->id;
-        aGroup->addLocation(aLocation);
+        tCell.group = aGroup.id;
+        aGroup.addLocation(aLocation);
         buildGroup(aLocation,aGroup);
       }
     }
@@ -262,19 +269,19 @@ void GameGrid::extendGroup(Location aLocation,int aColor,Group *aGroup)
 
 void GameGrid::deleteGroupAt(Location aLocation)
 {
-  Group *tGroup = getGroupAt(aLocation);
-  if (tGroup == NULL)
-  {
-    std::cout << "ERROR: Couldn't find group at " << aLocation.toString() << std::endl;
-  }
-  else
-  {
-    std::cout << "Deleting group with id " << tGroup->id << " at " << aLocation.toString() << std::endl;
-  }
+  Group tGroup = getGroupAt(aLocation);
+//  if (tGroup == NULL)
+//  {
+//    std::cout << "ERROR: Couldn't find group at " << aLocation.toString() << std::endl;
+//  }
+//  else
+//  {
+    std::cout << "Deleting group with id " << tGroup.id << " at " << aLocation.toString() << std::endl;
+//  }
 
   for (int tCol = 0; tCol < COLS; tCol++)
   {
-    std::vector<int> tRowsToDelete = tGroup->getRowsForCol(tCol);
+    std::vector<int> tRowsToDelete = tGroup.getRowsForCol(tCol);
 
     std::vector<int>::iterator tIter;
     for (tIter = tRowsToDelete.begin(); tIter != tRowsToDelete.end(); tIter++ )
@@ -282,7 +289,7 @@ void GameGrid::deleteGroupAt(Location aLocation)
       for (int tRow = *tIter; tRow >= 0; tRow--)
       {
         int tColor = getColorAt(Location(tRow-1,tCol));
-std::cout << "new color is " << tColor << std::endl;
+//std::cout << "new color is " << tColor << std::endl;
         grid[tRow][tCol].color = tColor;
         if (tColor == NO_COLOR)
         {
@@ -305,21 +312,21 @@ int GameGrid::getColorAt(Location aLocation)
   }
 }
 
-Group *GameGrid::getGroupAt(Location aLocation)
+Group GameGrid::getGroupAt(Location aLocation)
 {
   int tRow = aLocation.row;
   int tCol = aLocation.col;
 
-  std::vector<Group*>::iterator tIter;
+  std::vector<Group>::iterator tIter;
   for (tIter = groups.begin(); tIter != groups.end(); tIter++)
   {
-    Group *tGroup = *tIter;
-    if (tGroup->contains(aLocation))
+    if (tIter->contains(aLocation))
     {
-      return tGroup;
+      return *tIter;
     }
   }
-  return NULL;
+  std::cout << "ERROR: couldn't get group at "
+      << tRow << "," << tCol << std::endl;
 }
 
 void GameGrid::printBoard(const char *aHeader)
@@ -347,6 +354,6 @@ void GameGrid::printGroups(const char *aHeader)
   }
   for (int i = 0; i < groups.size(); i++)
   {
-    std::cout << groups[i]->toString() << std::endl;
+    std::cout << groups[i].toString() << std::endl;
   }
 }

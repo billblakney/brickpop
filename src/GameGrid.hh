@@ -14,7 +14,7 @@ public:
 
   Cell grid[ROWS][COLS];
 
-  std::vector<Group*> groups;
+  std::vector<Group> groups;
 
   GameGrid();
 
@@ -51,11 +51,11 @@ private:
 
   void clearGroups();
   void buildGroups();
-  void buildGroup(Location aLocation,Group *aGroup);
-  void extendGroup(Location aLocation,int aColor,Group *aGroup);
+  void buildGroup(Location aLocation,Group &aGroup);
+  void extendGroup(Location aLocation,int aColor,Group &aGroup);
 
   void deleteGroupAt(Location aLocation);
-  Group *getGroupAt(Location aLocation);
+  Group getGroupAt(Location aLocation);
   int getColorAt(Location aLocation);
 
   void printBoard(const char *aHeader = NULL);
