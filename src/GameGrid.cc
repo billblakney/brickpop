@@ -31,47 +31,49 @@ void GameGrid::buildGrid()
   snapshot.grid[0][5].color = 8;
   snapshot.grid[1][5].color = 8;
 
-  printBoard("before groups");
+  printBoard(snapshot,"before groups");
 
-  buildGroups();
-  printBoard("\nafter groups");
+  buildGroups(snapshot);
+  printBoard(snapshot,"\nafter groups");
 
-  deleteGroupAt(Location(5,5));
-  printBoard("\nafter delete");
+  Snapshot tSnapshot1 = snapshot;
+  deleteGroupAt(tSnapshot1,Location(5,5));
+  printBoard(tSnapshot1,"\nafter delete");
 
-  clearGroups();
-  printBoard("\nnew groups after delete and clear");
-  buildGroups();
-  printBoard("\nnew groups after delete and rebuild groups");
+  Snapshot tSnapshot2 = tSnapshot1;
+  clearGroups(tSnapshot2);
+//  printBoard(snapshot,"\nnew groups after delete and clear");
+  buildGroups(tSnapshot2);
+  printBoard(tSnapshot2,"\nnew groups after delete and rebuild groups");
 }
 
-void GameGrid::clearGroups()
+void GameGrid::clearGroups(Snapshot &aSnapshot)
 {
   groupSeqNum = NO_GROUP; //TODO
 
   for (int r = 0; r < ROWS; r++)
     for (int c = 0; c < COLS; c++)
-      snapshot.grid[r][c].group = NO_GROUP;
+      aSnapshot.grid[r][c].group = NO_GROUP;
 
-  snapshot.groups.clear();
+  aSnapshot.groups.clear();
 }
 
-void GameGrid::buildGroups()
+void GameGrid::buildGroups(Snapshot &aSnapshot)
 {
   for (int r = 0; r < ROWS; r++)
   {
     for (int c = 0; c < COLS; c++)
     {
       Location tLocation(r,c);
-      Cell &tCell = snapshot.grid[r][c];
+      Cell &tCell = aSnapshot.grid[r][c];
       if (!tCell.empty && tCell.group == NO_GROUP)
       {
         int tGroupIdx = ++groupSeqNum;
         tCell.group = tGroupIdx;
         Group tGroup(tGroupIdx);
         tGroup.addLocation(tLocation);
-        buildGroup(tLocation,tGroup);
-        snapshot.groups.push_back(tGroup);
+        buildGroup(aSnapshot,tLocation,tGroup);
+        aSnapshot.groups.push_back(tGroup);
       }
     }
   }
@@ -214,9 +216,9 @@ void GameGrid::resetGrid()
 {
 }
 
-void GameGrid::buildGroup(Location aLocation,Group &aGroup)
+void GameGrid::buildGroup(Snapshot &aSnapshot,Location aLocation,Group &aGroup)
 {
-  Cell &tCell = snapshot.grid[aLocation.row][aLocation.col];
+  Cell &tCell = aSnapshot.grid[aLocation.row][aLocation.col];
 
   if (tCell.empty)
   {
@@ -232,36 +234,36 @@ void GameGrid::buildGroup(Location aLocation,Group &aGroup)
   Location tLocation;
 
   tLocation = getLocationNorth(aLocation);
-  extendGroup(tLocation,tColor,aGroup);
+  extendGroup(aSnapshot,tLocation,tColor,aGroup);
 
   tLocation = getLocationEast(aLocation);
-  extendGroup(tLocation,tColor,aGroup);
+  extendGroup(aSnapshot,tLocation,tColor,aGroup);
 
   tLocation = getLocationSouth(aLocation);
-  extendGroup(tLocation,tColor,aGroup);
+  extendGroup(aSnapshot,tLocation,tColor,aGroup);
 
   tLocation = getLocationWest(aLocation);
-  extendGroup(tLocation,tColor,aGroup);
+  extendGroup(aSnapshot,tLocation,tColor,aGroup);
 }
 
-void GameGrid::extendGroup(Location aLocation,int aColor,Group &aGroup)
+void GameGrid::extendGroup(Snapshot &aSnapshot,Location aLocation,int aColor,Group &aGroup)
 {
   if (aLocation.isValid())
   {
-    Cell &tCell = snapshot.grid[aLocation.row][aLocation.col];
+    Cell &tCell = aSnapshot.grid[aLocation.row][aLocation.col];
     if (!tCell.empty && tCell.group == NO_GROUP)
     {
       if (tCell.color == aColor)
       {
         tCell.group = aGroup.id;
         aGroup.addLocation(aLocation);
-        buildGroup(aLocation,aGroup);
+        buildGroup(aSnapshot,aLocation,aGroup);
       }
     }
   }
 }
 
-void GameGrid::deleteGroupAt(Location aLocation)
+void GameGrid::deleteGroupAt(Snapshot &aSnapshot,Location aLocation)
 {
   Group tGroup = getGroupAt(aLocation);
 //  if (tGroup == NULL)
@@ -282,23 +284,23 @@ void GameGrid::deleteGroupAt(Location aLocation)
     {
       for (int tRow = *tIter; tRow >= 0; tRow--)
       {
-        int tColor = getColorAt(Location(tRow-1,tCol));
+        int tColor = getColorAt(aSnapshot,Location(tRow-1,tCol));
 //std::cout << "new color is " << tColor << std::endl;
-        snapshot.grid[tRow][tCol].color = tColor;
+        aSnapshot.grid[tRow][tCol].color = tColor;
         if (tColor == NO_COLOR)
         {
-          snapshot.grid[tRow][tCol].empty = true;
+          aSnapshot.grid[tRow][tCol].empty = true;
         }
       }
     }
   }
 }
 
-int GameGrid::getColorAt(Location aLocation)
+int GameGrid::getColorAt(Snapshot &aSnapshot,Location aLocation)
 {
   if (aLocation.isValid())
   {
-    return snapshot.grid[aLocation.row][aLocation.col].color;
+    return aSnapshot.grid[aLocation.row][aLocation.col].color;
   }
   else
   {
@@ -323,7 +325,7 @@ Group GameGrid::getGroupAt(Location aLocation)
       << tRow << "," << tCol << std::endl;
 }
 
-void GameGrid::printBoard(const char *aHeader)
+void GameGrid::printBoard(Snapshot &aSnapshot,const char *aHeader)
 {
   if (aHeader != NULL)
   {
@@ -333,7 +335,7 @@ void GameGrid::printBoard(const char *aHeader)
   {
     for (int c = 0; c < COLS; c++)
     {
-      Cell &tCell = snapshot.grid[r][c];
+      Cell &tCell = aSnapshot.grid[r][c];
       std::cout << tCell.toString() << " ";
     }
     std::cout << std::endl;

@@ -46,16 +46,16 @@ private:
 
 //  void setInitialNeighbors();
 
-  void clearGroups();
-  void buildGroups();
-  void buildGroup(Location aLocation,Group &aGroup);
-  void extendGroup(Location aLocation,int aColor,Group &aGroup);
+  void clearGroups(Snapshot &aSnapshot);
+  void buildGroups(Snapshot &aSnapshot);
+  void buildGroup(Snapshot &aSnapshot,Location aLocation,Group &aGroup);
+  void extendGroup(Snapshot &aSnapshot,Location aLocation,int aColor,Group &aGroup);
 
-  void deleteGroupAt(Location aLocation);
+  void deleteGroupAt(Snapshot &aSnapshot,Location aLocation);
   Group getGroupAt(Location aLocation);
-  int getColorAt(Location aLocation);
+  int getColorAt(Snapshot &aSnapshot,Location aLocation);
 
-  void printBoard(const char *aHeader = NULL);
+  void printBoard(Snapshot &aSnapshot,const char *aHeader = NULL);
   void printGroups(const char *aHeader = NULL);
 };
 
