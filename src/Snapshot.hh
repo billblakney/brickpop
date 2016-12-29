@@ -16,6 +16,10 @@ public:
   Snapshot();
 
   virtual ~Snapshot();
+
+  int getNumTrivialGroups();
+
+  int getNumNonTrivialGroups();
 };
 
 #endif /* SNAPSHOT_HH_ */
