@@ -33,17 +33,17 @@ void GameGrid::buildGrid()
 
   printBoard(snapshot,"before groups");
 
-  buildGroups(snapshot);
+snapshot.groups = buildGroups(snapshot);
   printBoard(snapshot,"\ninitial snapshot");
   std::cout << "num groups nontriv,triv: "
       << snapshot.getNumNonTrivialGroups() << ","
       << snapshot.getNumTrivialGroups() << std::endl;
 
   Snapshot tSnapshot1 = snapshot;
-//  deleteGroupAt(tSnapshot1,Location(5,5));
-  deleteGroupAt(tSnapshot1,Location(5,2));
+  deleteGroupAt(tSnapshot1,Location(5,5));
+//  deleteGroupAt(tSnapshot1,Location(5,2));
   clearGroups(tSnapshot1);
-  buildGroups(tSnapshot1);
+tSnapshot1.groups = buildGroups(tSnapshot1);
   printBoard(tSnapshot1,"\nnew groups after delete and rebuild groups");
   std::cout << "num groups nontriv,triv: "
       << tSnapshot1.getNumNonTrivialGroups() << ","
@@ -61,8 +61,10 @@ void GameGrid::clearGroups(Snapshot &aSnapshot)
   aSnapshot.groups.clear();
 }
 
-void GameGrid::buildGroups(Snapshot &aSnapshot)
+std::vector<Group> GameGrid::buildGroups(Snapshot &aSnapshot)
 {
+  std::vector<Group> tGroups;
+
   for (int r = 0; r < ROWS; r++)
   {
     for (int c = 0; c < COLS; c++)
@@ -76,10 +78,12 @@ void GameGrid::buildGroups(Snapshot &aSnapshot)
         Group tGroup(tGroupIdx);
         tGroup.addLocation(tLocation);
         buildGroup(aSnapshot,tLocation,tGroup);
-        aSnapshot.groups.push_back(tGroup);
+        tGroups.push_back(tGroup);
       }
     }
   }
+
+  return tGroups;
 }
 
 Location GameGrid::getLocationNorth(Location aLocation)
@@ -268,7 +272,7 @@ void GameGrid::extendGroup(Snapshot &aSnapshot,Location aLocation,int aColor,Gro
 
 void GameGrid::deleteGroupAt(Snapshot &aSnapshot,Location aLocation)
 {
-  Group tGroup = getGroupAt(aLocation);
+  Group tGroup = getGroupAt(aSnapshot.groups,aLocation);
 //  if (tGroup == NULL)
 //  {
 //    std::cout << "ERROR: Couldn't find group at " << aLocation.toString() << std::endl;
@@ -313,7 +317,7 @@ int GameGrid::getColorAt(Snapshot &aSnapshot,Location aLocation)
   }
 }
 
-Group GameGrid::getGroupAt(Location aLocation)
+Group GameGrid::getGroupAt(std::vector<Group> &aGroups,Location aLocation)
 {
   Group tGroup;
 
@@ -321,7 +325,7 @@ Group GameGrid::getGroupAt(Location aLocation)
   int tCol = aLocation.col;
 
   std::vector<Group>::iterator tIter;
-  for (tIter = snapshot.groups.begin(); tIter != snapshot.groups.end(); tIter++)
+  for (tIter = aGroups.begin(); tIter != aGroups.end(); tIter++)
   {
     if (tIter->contains(aLocation))
     {

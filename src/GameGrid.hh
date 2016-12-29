@@ -47,12 +47,12 @@ private:
 //  void setInitialNeighbors();
 
   void clearGroups(Snapshot &aSnapshot);
-  void buildGroups(Snapshot &aSnapshot);
+  std::vector<Group> buildGroups(Snapshot &aSnapshot);
   void buildGroup(Snapshot &aSnapshot,Location aLocation,Group &aGroup);
   void extendGroup(Snapshot &aSnapshot,Location aLocation,int aColor,Group &aGroup);
 
   void deleteGroupAt(Snapshot &aSnapshot,Location aLocation);
-  Group getGroupAt(Location aLocation);
+  Group getGroupAt(std::vector<Group> &aGroups,Location aLocation);
   int getColorAt(Snapshot &aSnapshot,Location aLocation);
 
   void printBoard(Snapshot &aSnapshot,const char *aHeader = NULL);
