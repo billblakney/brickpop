@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Snapshot.hh"
 
 Snapshot::Snapshot()
@@ -44,4 +45,82 @@ void Snapshot::deleteColumn(int aCol)
     grid[tRow][COLS-1].empty = true;
     grid[tRow][COLS-1].color = NO_COLOR;
   }
+}
+
+void Snapshot::deleteGroupAt(GroupList &aGroups,Location aLocation)
+{
+  Group tGroup = getGroupAt(aGroups,aLocation);
+
+  if (tGroup.isEmpty())
+  {
+    std::cout << "ERROR: Couldn't find group at " << aLocation.toString() << std::endl;
+    exit(1);
+  }
+
+//  std::cout << "Deleting group with id " << tGroup.id << " at " << aLocation.toString() << std::endl;
+
+    deleteGroup(tGroup);
+}
+
+void Snapshot::deleteGroup(Group &aGroup)
+{
+  for (int tCol = 0; tCol < COLS; tCol++)
+  {
+    std::vector<int> tRowsToDelete = aGroup.getRowsForCol(tCol);
+
+    std::vector<int>::iterator tIter;
+    for (tIter = tRowsToDelete.begin(); tIter != tRowsToDelete.end(); tIter++ )
+    {
+      for (int tRow = *tIter; tRow >= 0; tRow--)
+      {
+        int tColor = getColorAt(Location(tRow-1,tCol));
+//std::cout << "new color is " << tColor << std::endl;
+        grid[tRow][tCol].color = tColor;
+        if (tColor == NO_COLOR)
+        {
+          grid[tRow][tCol].empty = true;
+        }
+      }
+    }
+  }
+
+  normalizeColumns();
+}
+
+int Snapshot::getColorAt(Location aLocation)
+{
+  if (aLocation.isValid())
+  {
+    return grid[aLocation.row][aLocation.col].color;
+  }
+  else
+  {
+    return NO_COLOR;
+  }
+}
+
+Group Snapshot::getGroupAt(GroupList &aGroups,Location aLocation)
+{
+  Group tGroup;
+
+  int tRow = aLocation.row;
+  int tCol = aLocation.col;
+
+  GroupList::iterator tIter;
+  for (tIter = aGroups.begin(); tIter != aGroups.end(); tIter++)
+  {
+    if (tIter->contains(aLocation))
+    {
+      tGroup = *tIter;
+    }
+  }
+
+  if (tGroup.isEmpty())
+  {
+    std::cout << "ERROR: couldn't get group at "
+        << tRow << "," << tCol << std::endl;
+    exit(1);
+  }
+
+  return tGroup;
 }

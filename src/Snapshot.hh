@@ -18,6 +18,11 @@ public:
 
   virtual ~Snapshot();
 
+  void deleteGroupAt(GroupList &aGroup,Location aLocation);
+  void deleteGroup(Group &aGroup);
+  Group getGroupAt(GroupList &aGroups,Location aLocation);
+  int getColorAt(Location aLocation);
+
   bool isColumnEmpty(int aCol);
 
   void normalizeColumns();

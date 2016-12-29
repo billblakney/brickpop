@@ -41,8 +41,8 @@ snapshot.groupList = buildGroups(snapshot);
       << snapshot.groupList.getNumTrivialGroups() << std::endl;
 
   Snapshot tSnapshot1 = snapshot;
-  deleteGroupAt(tSnapshot1,tSnapshot1.groupList,Location(5,5));
-//  deleteGroupAt(tSnapshot1,tSnapshot1.groupList,Location(5,2));
+  tSnapshot1.deleteGroupAt(tSnapshot1.groupList,Location(5,5));
+//  tSnapshot1.deleteGroupAt(tSnapshot1.groupList,Location(5,2));
   clearGroups(tSnapshot1,tSnapshot1.groupList);
 tSnapshot1.groupList = buildGroups(tSnapshot1);
   printBoard(tSnapshot1,"\nnew groups after delete and rebuild groups");
@@ -270,84 +270,6 @@ void GameGrid::extendGroup(Snapshot &aSnapshot,Location aLocation,int aColor,Gro
       }
     }
   }
-}
-
-void GameGrid::deleteGroupAt(Snapshot &aSnapshot,GroupList &aGroups,Location aLocation)
-{
-  Group tGroup = getGroupAt(aGroups,aLocation);
-//  if (tGroup == NULL)
-//  {
-//    std::cout << "ERROR: Couldn't find group at " << aLocation.toString() << std::endl;
-//  }
-//  else
-//  {
-    std::cout << "Deleting group with id " << tGroup.id << " at " << aLocation.toString() << std::endl;
-//  }
-
-    deleteGroup(aSnapshot,tGroup);
-}
-
-void GameGrid::deleteGroup(Snapshot &aSnapshot,Group &aGroup)
-{
-  for (int tCol = 0; tCol < COLS; tCol++)
-  {
-    std::vector<int> tRowsToDelete = aGroup.getRowsForCol(tCol);
-
-    std::vector<int>::iterator tIter;
-    for (tIter = tRowsToDelete.begin(); tIter != tRowsToDelete.end(); tIter++ )
-    {
-      for (int tRow = *tIter; tRow >= 0; tRow--)
-      {
-        int tColor = getColorAt(aSnapshot,Location(tRow-1,tCol));
-//std::cout << "new color is " << tColor << std::endl;
-        aSnapshot.grid[tRow][tCol].color = tColor;
-        if (tColor == NO_COLOR)
-        {
-          aSnapshot.grid[tRow][tCol].empty = true;
-        }
-      }
-    }
-  }
-
-  aSnapshot.normalizeColumns();
-}
-
-int GameGrid::getColorAt(Snapshot &aSnapshot,Location aLocation)
-{
-  if (aLocation.isValid())
-  {
-    return aSnapshot.grid[aLocation.row][aLocation.col].color;
-  }
-  else
-  {
-    return NO_COLOR;
-  }
-}
-
-Group GameGrid::getGroupAt(GroupList &aGroups,Location aLocation)
-{
-  Group tGroup;
-
-  int tRow = aLocation.row;
-  int tCol = aLocation.col;
-
-  GroupList::iterator tIter;
-  for (tIter = aGroups.begin(); tIter != aGroups.end(); tIter++)
-  {
-    if (tIter->contains(aLocation))
-    {
-      tGroup = *tIter;
-    }
-  }
-
-  if (tGroup.isEmpty())
-  {
-    std::cout << "ERROR: couldn't get group at "
-        << tRow << "," << tCol << std::endl;
-    exit(1);
-  }
-
-  return tGroup;
 }
 
 void GameGrid::printBoard(Snapshot &aSnapshot,const char *aHeader)
