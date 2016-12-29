@@ -34,23 +34,19 @@ void GameGrid::buildGrid()
   printBoard(snapshot,"before groups");
 
   buildGroups(snapshot);
-  printBoard(snapshot,"\nafter groups");
+  printBoard(snapshot,"\ninitial snapshot");
   std::cout << "num groups nontriv,triv: "
       << snapshot.getNumNonTrivialGroups() << ","
       << snapshot.getNumTrivialGroups() << std::endl;
 
   Snapshot tSnapshot1 = snapshot;
   deleteGroupAt(tSnapshot1,Location(5,5));
-  printBoard(tSnapshot1,"\nafter delete");
-
-  Snapshot tSnapshot2 = tSnapshot1;
-  clearGroups(tSnapshot2);
-//  printBoard(snapshot,"\nnew groups after delete and clear");
-  buildGroups(tSnapshot2);
-  printBoard(tSnapshot2,"\nnew groups after delete and rebuild groups");
+  clearGroups(tSnapshot1);
+  buildGroups(tSnapshot1);
+  printBoard(tSnapshot1,"\nnew groups after delete and rebuild groups");
   std::cout << "num groups nontriv,triv: "
-      << tSnapshot2.getNumNonTrivialGroups() << ","
-      << tSnapshot2.getNumTrivialGroups() << std::endl;
+      << tSnapshot1.getNumNonTrivialGroups() << ","
+      << tSnapshot1.getNumTrivialGroups() << std::endl;
 }
 
 void GameGrid::clearGroups(Snapshot &aSnapshot)
