@@ -3,8 +3,9 @@
 
 Cell::Cell()
 {
-  color = -1;
-  group = 0;
+  empty = true;
+  color = NO_COLOR;
+  group = NO_GROUP;
 }
 
 Cell::~Cell()
@@ -14,7 +15,14 @@ Cell::~Cell()
 std::string Cell::toString()
 {
   std::stringstream sStr;
-  sStr << color << "(" << group << ")";
+  if (!empty)
+  {
+    sStr << color << "(" << group << ")";
+  }
+  else
+  {
+    sStr << "-(-)";
+  }
   return sStr.str();
 }
 

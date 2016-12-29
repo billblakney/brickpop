@@ -49,10 +49,14 @@ private:
 
 //  void setInitialNeighbors();
 
+  void clearGroups();
+  void buildGroups();
   void buildGroup(Location aLocation,Group *aGroup);
   void extendGroup(Location aLocation,int aColor,Group *aGroup);
 
   void deleteGroupAt(Location aLocation);
+  Group *getGroupAt(Location aLocation);
+  int getColorAt(Location aLocation);
 
   void printBoard(const char *aHeader = NULL);
   void printGroups(const char *aHeader = NULL);

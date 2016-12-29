@@ -1,6 +1,9 @@
 #include <sstream>
 #include "Location.hh"
 
+#define ROWS 10 //TODO where
+#define COLS 10 //TODO where
+
 Location::Location()
 {
   row = -1;
@@ -28,7 +31,8 @@ Location::~Location()
 
 bool Location::isValid()
 {
-  if (row != -1 && col != -1)
+  if (row >= 0 && row < ROWS
+   && col >= 0 && col < COLS)
     return true;
   else
     return false;

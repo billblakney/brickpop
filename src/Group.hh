@@ -16,6 +16,8 @@ public:
   Group(int id);
   virtual ~Group();
   void addLocation(Location aLocation);
+  int getFirstToDeleteAtCol(int aCol);
+  int getNumToDeleteAtCol(int aCol);
   std::string toString();
 };
 

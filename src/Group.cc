@@ -33,6 +33,23 @@ void Group::addLocation(Location aLocation)
   }
 }
 
+int Group::getFirstToDeleteAtCol(int aCol)
+{
+  return boundaries[aCol][0];
+}
+
+int Group::getNumToDeleteAtCol(int aCol)
+{
+  if (boundaries[aCol][0] != -1)
+  {
+    return (boundaries[aCol][0] - boundaries[aCol][1] + 1);
+  }
+  else
+  {
+    return 0;
+  }
+}
+
 std::string Group::toString()
 {
   std::stringstream tStr;
