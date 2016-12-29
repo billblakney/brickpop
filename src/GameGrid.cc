@@ -1,6 +1,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <iostream>
+#include "brickpop_const.h"
 #include "GameGrid.hh"
 
 GameGrid::GameGrid()
@@ -52,13 +53,6 @@ void GameGrid::clearGroups()
     for (int c = 0; c < COLS; c++)
       grid[r][c].group = NO_GROUP;
 
-//TODO rm
-//  std::vector<Group*>::iterator tIter;
-//  for (tIter = groups.begin(); tIter != groups.end(); tIter++)
-//  {
-//    Group *tGroup = *tIter;
-//    delete tGroup;
-//  }
   groups.clear();
 }
 

@@ -2,12 +2,8 @@
 #define CELL_HH_
 
 #include <string>
+#include "brickpop_const.h"
 #include "Location.hh"
-
-#define NUM_COLORS 4
-
-#define NO_GROUP 0
-#define NO_COLOR -1
 
 class Cell
 {

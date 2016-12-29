@@ -2,11 +2,9 @@
 #define GAMEGRID_HH_
 
 #include <vector>
+#include "brickpop_const.h"
 #include "Cell.hh"
 #include "Group.hh"
-
-#define ROWS 10
-#define COLS 10
 
 class GameGrid
 {
