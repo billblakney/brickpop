@@ -7,6 +7,6 @@
 #define NUM_COLORS 4
 
 #define NO_GROUP 0
-#define NO_COLOR -1
+#define NO_COLOR 0
 
 #endif // BRICKPOP_CONST_H

@@ -21,15 +21,15 @@ void GameGrid::buildGrid()
     {
       Cell &tCell = snapshot.grid[r][c];
       tCell.empty = false;
-      tCell.color = c; //TODO
+      tCell.color = 'a' + c; //TODO
       tCell.group = NO_GROUP;
     }
   }
 
-  snapshot.grid[9][5].color = 1;
-  snapshot.grid[8][5].color = 1;
-  snapshot.grid[0][5].color = 8;
-  snapshot.grid[1][5].color = 8;
+  snapshot.grid[9][5].color = 'x';
+  snapshot.grid[8][5].color = 'x';
+  snapshot.grid[0][5].color = 'y';
+  snapshot.grid[1][5].color = 'y';
 
   printBoard(snapshot,"before groups");
 

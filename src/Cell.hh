@@ -11,7 +11,7 @@ public:
 
   bool empty;
 
-  int color;
+  unsigned char color;
 
   int group;
 
