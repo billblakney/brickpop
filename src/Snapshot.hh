@@ -25,7 +25,7 @@ public:
   void buildGroup(Location aLocation,Group &aGroup);
   void extendGroup(Location aLocation,int aColor,Group &aGroup);
 
-  void deleteGroupAt(GroupList &aGroup,Location aLocation);
+  Snapshot deleteGroupAt(Location aLocation);
   void deleteGroup(Group &aGroup);
   Group getGroupAt(GroupList &aGroups,Location aLocation);
   int getColorAt(Location aLocation);

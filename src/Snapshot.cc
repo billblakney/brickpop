@@ -29,6 +29,35 @@ Snapshot::~Snapshot()
 {
 }
 
+Snapshot Snapshot::deleteGroupAt(Location aLocation)
+{
+  Snapshot tSnapshot = *this; //TODO ok? copies groups, not needed
+
+  Group tGroup = getGroupAt(groupList,aLocation);
+
+  if (tGroup.isEmpty())
+  {
+    std::cout << "ERROR: Couldn't find group at " << aLocation.toString() << std::endl;
+    exit(1);
+  }
+
+//  std::cout << "Deleting group with id " << tGroup.id << " at " << aLocation.toString() << std::endl;
+
+    tSnapshot.deleteGroup(tGroup);
+    tSnapshot.clearGroups();
+    tSnapshot.buildGroups();
+
+#if 0
+  tSnapshot1.deleteGroupAt(tSnapshot1.groupList,Location(5,5));
+//  tSnapshot1.deleteGroupAt(tSnapshot1.groupList,Location(5,2));
+  tSnapshot1.clearGroups();
+  tSnapshot1.buildGroups();
+  tSnapshot1.printBoard("\nnew groups after delete and rebuild groups");
+#endif
+
+    return tSnapshot;
+}
+
 void Snapshot::clearGroups()
 {
   groupSeqNum = NO_GROUP; //TODO
@@ -146,21 +175,6 @@ void Snapshot::deleteColumn(int aCol)
   }
 }
 
-void Snapshot::deleteGroupAt(GroupList &aGroups,Location aLocation)
-{
-  Group tGroup = getGroupAt(aGroups,aLocation);
-
-  if (tGroup.isEmpty())
-  {
-    std::cout << "ERROR: Couldn't find group at " << aLocation.toString() << std::endl;
-    exit(1);
-  }
-
-//  std::cout << "Deleting group with id " << tGroup.id << " at " << aLocation.toString() << std::endl;
-
-    deleteGroup(tGroup);
-}
-
 void Snapshot::deleteGroup(Group &aGroup)
 {
   for (int tCol = 0; tCol < COLS; tCol++)
@@ -239,6 +253,9 @@ void Snapshot::printBoard(const char *aHeader)
     }
     std::cout << std::endl;
   }
+  std::cout << "num groups nontriv,triv: "
+      << groupList.getNumNonTrivialGroups() << ","
+      << groupList.getNumTrivialGroups() << std::endl;
 }
 
 void Snapshot::printGroups(const char *aHeader)
