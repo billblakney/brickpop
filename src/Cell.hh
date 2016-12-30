@@ -19,6 +19,8 @@ public:
 
   virtual ~Cell();
 
+  std::string toLongString();
+
   std::string toString();
 };
 

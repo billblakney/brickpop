@@ -276,7 +276,7 @@ int Snapshot::getGroupIdFromIndex(int aGroupIndex)
   return groupList[aGroupIndex].id;
 }
 
-void Snapshot::printBoard(const char *aHeader)
+void Snapshot::printBoard(const char *aHeader,int aFormat)
 {
   if (aHeader != NULL)
   {
@@ -287,7 +287,14 @@ void Snapshot::printBoard(const char *aHeader)
     for (int c = 0; c < COLS; c++)
     {
       Cell &tCell = grid[r][c];
-      std::cout << tCell.toString() << " ";
+      if (aFormat == 0)
+      {
+        std::cout << tCell.toString() << " ";
+      }
+      else
+      {
+        std::cout << tCell.toLongString() << " ";
+      }
     }
     std::cout << std::endl;
   }

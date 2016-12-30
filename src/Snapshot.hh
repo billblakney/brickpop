@@ -30,7 +30,7 @@ public:
 
   int getGroupIdFromIndex(int aGroupIndex);
 
-  void printBoard(const char *aHeader = NULL);
+  void printBoard(const char *aHeader = NULL,int aFormat = 0);
 
   void printGroups(const char *aHeader = NULL);
 

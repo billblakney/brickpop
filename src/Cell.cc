@@ -12,17 +12,31 @@ Cell::~Cell()
 {
 }
 
-std::string Cell::toString()
+std::string Cell::toLongString()
 {
-  std::stringstream sStr;
+  std::stringstream tStr;
   if (!empty)
   {
-    sStr << color << "(" << group << ")";
+    tStr << color << "(" << group << ")";
   }
   else
   {
-    sStr << "-(-)";
+    tStr << "-(-)";
   }
-  return sStr.str();
+  return tStr.str();
+}
+
+std::string Cell::toString()
+{
+  std::string tStr;
+  if (!empty)
+  {
+    tStr += color;
+  }
+  else
+  {
+    tStr += '-';
+  }
+  return tStr;
 }
 
