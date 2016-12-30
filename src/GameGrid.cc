@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "brickpop_const.h"
+#include "GridUtil.hh"
 #include "GameGrid.hh"
 
 GameGrid::GameGrid()
@@ -88,143 +89,6 @@ GroupList GameGrid::buildGroups(Snapshot &aSnapshot)
   return tGroups;
 }
 
-Location GameGrid::getLocationNorth(Location aLocation)
-{
-  return getLocationNorth(aLocation.row,aLocation.col);
-}
-
-Location GameGrid::getLocationEast(Location aLocation)
-{
-  return getLocationEast(aLocation.row,aLocation.col);
-}
-
-Location GameGrid::getLocationSouth(Location aLocation)
-{
-  return getLocationSouth(aLocation.row,aLocation.col);
-}
-
-Location GameGrid::getLocationWest(Location aLocation)
-{
-  return getLocationWest(aLocation.row,aLocation.col);
-}
-
-Location GameGrid::getLocationNorth(int aRow,int aCol)
-{
-  if (isTopRow(aRow, aCol))
-  {
-    return Location();
-  }
-  else
-  {
-    return Location(aRow-1,aCol);
-  }
-}
-
-Location GameGrid::getLocationEast(int aRow,int aCol)
-{
-  if (isRightCol(aRow, aCol))
-  {
-    return Location();
-  }
-  else
-  {
-    return Location(aRow,aCol+1);
-  }
-}
-
-Location GameGrid::getLocationSouth(int aRow,int aCol)
-{
-  if (isBottomRow(aRow, aCol))
-  {
-    return Location();
-  }
-  else
-  {
-    return Location(aRow+1,aCol);
-  }
-}
-
-Location GameGrid::getLocationWest(int aRow,int aCol)
-{
-  if (isLeftCol(aRow, aCol))
-  {
-    return Location();
-  }
-  else
-  {
-    return Location(aRow,aCol-1);
-  }
-}
-
-
-bool GameGrid::isTopLeftCorner(int aRow,int aCol)
-{
-  if (aRow == 0 && aCol == 0)
-    return true;
-  else
-    return false;
-}
-
-bool GameGrid::isTopRightCorner(int aRow,int aCol)
-{
-  if (aRow == 0 && aCol == COLS-1)
-    return true;
-  else
-    return false;
-}
-
-bool GameGrid::isBottomLeftCorner(int aRow,int aCol)
-{
-  if (aRow == ROWS-1 && aCol == 0)
-    return true;
-  else
-    return false;
-}
-
-bool GameGrid::isBottomRightCorner(int aRow,int aCol)
-{
-  if (aRow == ROWS-1 && aCol == COLS-1)
-    return true;
-  else
-    return false;
-}
-
-bool GameGrid::isTopRow(int aRow,int aCol)
-{
-  if (aRow == 0)
-    return true;
-  else
-    return false;
-}
-
-bool GameGrid::isBottomRow(int aRow,int aCol)
-{
-  if (aRow == ROWS-1)
-    return true;
-  else
-    return false;
-}
-
-bool GameGrid::isLeftCol(int aRow,int aCol)
-{
-  if (aCol == 0)
-    return true;
-  else
-    return false;
-}
-
-bool GameGrid::isRightCol(int aRow,int aCol)
-{
-  if (aCol == COLS-1)
-    return true;
-  else
-    return false;
-}
-
-void GameGrid::resetGrid()
-{
-}
-
 void GameGrid::buildGroup(Snapshot &aSnapshot,Location aLocation,Group &aGroup)
 {
   Cell &tCell = aSnapshot.grid[aLocation.row][aLocation.col];
@@ -242,16 +106,16 @@ void GameGrid::buildGroup(Snapshot &aSnapshot,Location aLocation,Group &aGroup)
 
   Location tLocation;
 
-  tLocation = getLocationNorth(aLocation);
+  tLocation = GridUtil::getLocationNorth(aLocation);
   extendGroup(aSnapshot,tLocation,tColor,aGroup);
 
-  tLocation = getLocationEast(aLocation);
+  tLocation = GridUtil::getLocationEast(aLocation);
   extendGroup(aSnapshot,tLocation,tColor,aGroup);
 
-  tLocation = getLocationSouth(aLocation);
+  tLocation = GridUtil::getLocationSouth(aLocation);
   extendGroup(aSnapshot,tLocation,tColor,aGroup);
 
-  tLocation = getLocationWest(aLocation);
+  tLocation = GridUtil::getLocationWest(aLocation);
   extendGroup(aSnapshot,tLocation,tColor,aGroup);
 }
 
