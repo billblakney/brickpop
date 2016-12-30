@@ -1,14 +1,3 @@
-aaaazaaaaa
-bbbbbbbbbb
-cccccccccc
-aaaxxxaaaa
-aaaxxxaaaa
-yyyaaaaaaa
-yyyyaaaaaa
-aaacaaaaaa
-aaacaaaaaa
-bbbczbbbbb
-
 pppyrppggg
 ppprrybbgy
 brrrbygbgb
@@ -19,6 +8,17 @@ pprybpppyy
 bbybbrpprr
 gbyyrrpbyb
 ggggrrrbbb
+
+aaaazaaaaa
+bbbbbbbbbb
+cccccccccc
+aaaxxxaaaa
+aaaxxxaaaa
+yyyaaaaaaa
+yyyyaaaaaa
+aaacaaaaaa
+aaacaaaaaa
+bbbczbbbbb
 
 aaaaaaaaaa
 bbbbbbbbbb

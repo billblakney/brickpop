@@ -8,7 +8,10 @@
 #include "GridUtil.hh"
 #include "Util.hh"
 
-static bool debug = false;
+static int reduce_counter; // number of calls to reduce
+static bool debug = false; // detailed debug of solve
+static bool trace_reduce = true; // print one line per reduce call
+static int trace_reduce_period = 100000;
 
 Solver::Solver()
 {
@@ -41,12 +44,12 @@ void Solver::solve(std::string (&aColors)[ROWS])
 
   if (tReturn == 0)
   {
-    Util::printVector(tGroupsReduced,"Solve SUCCEEDED");
+    std::cout << "Solve SUCCEEDED: " << Util::toString(tGroupsReduced);
     replay(snapshot,tGroupsReduced);
   }
   else if (tReturn == 1)
   {
-    Util::printVector(tGroupsReduced,"Solve failed");
+    std::cout << "Solve failed: " << Util::toString(tGroupsReduced);
   }
 }
 
@@ -67,13 +70,14 @@ void Solver::replay(Board aSnapshot,std::vector<int> aGroupsReduced)
   }
 }
 
-static int counter;
-
 int Solver::reduce(Board &aSnapshot,std::vector<int> &aGroupsReduced)
 {
-  std::stringstream tStr;
-  tStr << ++counter << ": ";
-  Util::printVector(aGroupsReduced,tStr.str().c_str());
+  if (trace_reduce)
+  {
+    ++reduce_counter;
+    if (reduce_counter%trace_reduce_period ==0)
+      std::cout << reduce_counter << ": " << Util::toString(aGroupsReduced) << std::endl;
+  }
 
   for (int i = 0; i < aSnapshot.groupList.size(); i++)
   {
