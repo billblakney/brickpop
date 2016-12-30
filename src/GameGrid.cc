@@ -15,17 +15,6 @@ GameGrid::~GameGrid()
 
 void GameGrid::buildGrid()
 {
-//  std::string tColorsRow0 = "abcdexghij";
-//  std::string tColorsRow1 = "abcdexghij";
-//  std::string tColorsRow2 = "abcdefghij";
-//  std::string tColorsRow3 = "abcdefghij";
-//  std::string tColorsRow4 = "abcdefghij";
-//  std::string tColorsRow5 = "abcdefghij";
-//  std::string tColorsRow6 = "abcdefghij";
-//  std::string tColorsRow7 = "abcdefghij";
-//  std::string tColorsRow8 = "abcdeyghij";
-//  std::string tColorsRow9 = "abcdeyghij";
-
   std::string tRows[10] = {
       "abcdexghij",
       "abcdexghij",
@@ -41,36 +30,17 @@ void GameGrid::buildGrid()
 
   Snapshot snapshot(tRows);
 
-//  for (int r = 0; r < ROWS; r++)
-//  {
-//    for (int c = 0; c < COLS; c++)
-//    {
-//      Cell &tCell = snapshot.grid[r][c];
-//      tCell.empty = false;
-//      tCell.color = 'a' + c; //TODO
-//      tCell.group = NO_GROUP;
-//    }
-//  }
-//
-//  snapshot.grid[9][5].color = 'x';
-//  snapshot.grid[8][5].color = 'x';
-//  snapshot.grid[0][5].color = 'y';
-//  snapshot.grid[1][5].color = 'y';
-
-  printBoard(snapshot,"before groups");
-
-snapshot.groupList = snapshot.buildGroups();
   printBoard(snapshot,"\ninitial snapshot");
-
   std::cout << "num groups nontriv,triv: "
       << snapshot.groupList.getNumNonTrivialGroups() << ","
       << snapshot.groupList.getNumTrivialGroups() << std::endl;
 
   Snapshot tSnapshot1 = snapshot;
+
   tSnapshot1.deleteGroupAt(tSnapshot1.groupList,Location(5,5));
 //  tSnapshot1.deleteGroupAt(tSnapshot1.groupList,Location(5,2));
-  tSnapshot1.clearGroups(tSnapshot1.groupList);
-tSnapshot1.groupList = tSnapshot1.buildGroups();
+  tSnapshot1.clearGroups();
+  tSnapshot1.buildGroups();
   printBoard(tSnapshot1,"\nnew groups after delete and rebuild groups");
 
   std::cout << "num groups nontriv,triv: "

@@ -20,8 +20,8 @@ public:
 
   virtual ~Snapshot();
 
-  void clearGroups(GroupList &aGroups);
-  GroupList buildGroups();
+  void clearGroups();
+  void buildGroups();
   void buildGroup(Location aLocation,Group &aGroup);
   void extendGroup(Location aLocation,int aColor,Group &aGroup);
 

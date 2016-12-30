@@ -21,13 +21,15 @@ Snapshot::Snapshot(std::string (&aRows)[10])
       tCell.group = NO_GROUP;
     }
   }
+
+  buildGroups();
 }
 
 Snapshot::~Snapshot()
 {
 }
 
-void Snapshot::clearGroups(GroupList &aGroups)
+void Snapshot::clearGroups()
 {
   groupSeqNum = NO_GROUP; //TODO
 
@@ -35,13 +37,11 @@ void Snapshot::clearGroups(GroupList &aGroups)
     for (int c = 0; c < COLS; c++)
       grid[r][c].group = NO_GROUP;
 
-  aGroups.clear();
+  groupList.clear();
 }
 
-GroupList Snapshot::buildGroups()
+void Snapshot::buildGroups()
 {
-  GroupList tGroups;
-
   for (int r = 0; r < ROWS; r++)
   {
     for (int c = 0; c < COLS; c++)
@@ -55,12 +55,10 @@ GroupList Snapshot::buildGroups()
         Group tGroup(tGroupIdx);
         tGroup.addLocation(tLocation);
         buildGroup(tLocation,tGroup);
-        tGroups.push_back(tGroup);
+        groupList.push_back(tGroup);
       }
     }
   }
-
-  return tGroups;
 }
 
 void Snapshot::buildGroup(Location aLocation,Group &aGroup)
