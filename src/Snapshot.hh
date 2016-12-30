@@ -34,6 +34,10 @@ public:
 
   void normalizeColumns();
 
+  void printBoard(const char *aHeader = NULL);
+
+  void printGroups(const char *aHeader = NULL);
+
 private:
 
   int groupSeqNum;

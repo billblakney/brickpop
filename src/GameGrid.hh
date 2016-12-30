@@ -20,11 +20,6 @@ public:
   void resetGrid();
 
 private:
-
-//  void setInitialNeighbors();
-
-  void printBoard(Snapshot &aSnapshot,const char *aHeader = NULL);
-  void printGroups(GroupList &aGroups,const char *aHeader = NULL);
 };
 
 #endif /* GAMEGRID_HH_ */

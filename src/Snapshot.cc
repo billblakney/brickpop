@@ -223,3 +223,32 @@ Group Snapshot::getGroupAt(GroupList &aGroups,Location aLocation)
 
   return tGroup;
 }
+
+void Snapshot::printBoard(const char *aHeader)
+{
+  if (aHeader != NULL)
+  {
+    std::cout << aHeader << std::endl;
+  }
+  for (int r = 0; r < ROWS; r++)
+  {
+    for (int c = 0; c < COLS; c++)
+    {
+      Cell &tCell = grid[r][c];
+      std::cout << tCell.toString() << " ";
+    }
+    std::cout << std::endl;
+  }
+}
+
+void Snapshot::printGroups(const char *aHeader)
+{
+  if (aHeader != NULL)
+  {
+    std::cout << aHeader << std::endl;
+  }
+  for (int i = 0; i < groupList.size(); i++)
+  {
+    std::cout << groupList[i].toString() << std::endl;
+  }
+}
