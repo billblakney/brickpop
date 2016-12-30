@@ -97,7 +97,7 @@ int GameGrid::reduce(Snapshot &aSnapshot,std::vector<int> &aGroupsReduced)
       if (tReturn == 0)
         return 0;
       else
-        return 1;
+        aGroupsReduced.pop_back();
     }
   }
   return 1;
