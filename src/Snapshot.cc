@@ -38,6 +38,35 @@ Snapshot::~Snapshot()
 {
 }
 
+bool Snapshot::isGridEmpty()
+{
+  for (int i = 0; i < COLS; i++)
+  {
+    if (!isColumnEmpty(i))
+      return false;
+  }
+  return true;
+}
+
+Snapshot Snapshot::deleteGroup(int aIndex)
+{
+  if (aIndex < 0 || aIndex >= groupList.size())
+  {
+    std::cout << "ERROR: Group index is invalid" << std::endl;
+    exit(1);
+  }
+
+  Snapshot tSnapshot(grid);
+
+  Group tGroup = groupList[aIndex];
+
+  tSnapshot.deleteGroup(tGroup);
+  tSnapshot.buildGroups();
+
+  return tSnapshot;
+}
+
+//TODO checks for valid 2+ group
 Snapshot Snapshot::deleteGroupAt(Location aLocation)
 {
   Snapshot tSnapshot(grid);
@@ -58,7 +87,6 @@ Snapshot Snapshot::deleteGroupAt(Location aLocation)
     return tSnapshot;
 }
 
-#ifdef USE_CLEAR_GROUPS
 void Snapshot::clearGroups()
 {
   groupSeqNum = NO_GROUP; //TODO
@@ -69,10 +97,11 @@ void Snapshot::clearGroups()
 
   groupList.clear();
 }
-#endif
 
 void Snapshot::buildGroups()
 {
+  clearGroups();
+
   for (int r = 0; r < ROWS; r++)
   {
     for (int c = 0; c < COLS; c++)

@@ -19,6 +19,10 @@ public:
 
   void resetGrid();
 
+  int reduce(Snapshot &aSnapshot,std::vector<int> &aGroupsReduced);
+
+  void printVector(std::vector<int> &aVector,const char *aHeader = NULL);
+
 private:
 };
 
