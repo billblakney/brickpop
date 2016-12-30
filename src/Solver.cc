@@ -10,7 +10,7 @@
 
 static int reduce_counter; // number of calls to reduce
 static bool debug = false; // detailed debug of solve
-static bool trace_reduce = true; // print one line per reduce call
+static bool trace_reduce = false; // print one line per reduce call
 static int trace_reduce_period = 100000;
 
 Solver::Solver()

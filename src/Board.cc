@@ -1,5 +1,7 @@
 #include "Board.hh"
 
+#include <cstring>
+#include <cstdlib>
 #include <iostream>
 #include "GridUtil.hh"
 #include "Util.hh"
