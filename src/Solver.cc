@@ -1,36 +1,37 @@
+#include "Solver.hh"
+
 #include <cstddef>
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
 #include "brickpop_const.h"
 #include "GridUtil.hh"
-#include "GameGrid.hh"
 #include "Util.hh"
 
 static bool debug = false;
 
-GameGrid::GameGrid()
+Solver::Solver()
 {
 }
 
-GameGrid::~GameGrid()
+Solver::~Solver()
 {
 }
 
-void GameGrid::solve(std::string (&aColors)[ROWS])
+void Solver::solve(std::string (&aColors)[ROWS])
 {
-  Snapshot snapshot(aColors);
+  Board snapshot(aColors);
   if (debug)
     snapshot.printBoard("\ninitial snapshot");
 
 //#define TEST1
 //#define TEST2
 #ifdef TEST1
-  Snapshot tSnapshot1 = snapshot.deleteGroupAt(Location(5,5));
+  Board tSnapshot1 = snapshot.deleteGroupAt(Location(5,5));
   tSnapshot1.printBoard("\nsnapshot after delete");
 #endif
 #ifdef TEST2
-  Snapshot tNextSnapshot = snapshot.deleteGroup(0);
+  Board tNextSnapshot = snapshot.deleteGroup(0);
   tNextSnapshot.printBoard("\nsnapshot after delete first group");
 #endif
 
@@ -49,9 +50,9 @@ void GameGrid::solve(std::string (&aColors)[ROWS])
   }
 }
 
-void GameGrid::replay(Snapshot aSnapshot,std::vector<int> aGroupsReduced)
+void Solver::replay(Board aSnapshot,std::vector<int> aGroupsReduced)
 {
-  Snapshot tSnapshot = aSnapshot;
+  Board tSnapshot = aSnapshot;
   tSnapshot.printBoard("Original board:");
 
   int i = 0;
@@ -68,7 +69,7 @@ void GameGrid::replay(Snapshot aSnapshot,std::vector<int> aGroupsReduced)
 
 static int counter;
 
-int GameGrid::reduce(Snapshot &aSnapshot,std::vector<int> &aGroupsReduced)
+int Solver::reduce(Board &aSnapshot,std::vector<int> &aGroupsReduced)
 {
   std::stringstream tStr;
   tStr << ++counter << ": ";
@@ -81,7 +82,7 @@ int GameGrid::reduce(Snapshot &aSnapshot,std::vector<int> &aGroupsReduced)
 
     aGroupsReduced.push_back(i);
 
-    Snapshot tNextSnapshot = aSnapshot.deleteGroup(i);
+    Board tNextSnapshot = aSnapshot.deleteGroup(i);
     if (debug)
       tNextSnapshot.printBoard();
 

@@ -1,5 +1,6 @@
 #include <iostream>
-#include "GameGrid.hh"
+
+#include "Solver.hh"
 
 static std::string colors[ROWS];
 
@@ -8,7 +9,7 @@ void readColors(const char *fname);
 int main(int argc,char **argv)
 {
   readColors(argv[1]);
-	GameGrid tGameGrid;
+	Solver tGameGrid;
 	tGameGrid.solve(colors);
 	return 0;
 }

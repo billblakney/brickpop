@@ -1,28 +1,28 @@
-#ifndef SNAPSHOT_HH_
-#define SNAPSHOT_HH_
+#ifndef BOARD_HH_
+#define BOARD_HH_
 
 #include "brickpop_const.h"
 #include "Cell.hh"
 #include "GroupList.hh"
 
-class Snapshot
+class Board
 {
 public:
 
 //  std::vector<Group> groups;
   GroupList groupList;
 
-  Snapshot();
+  Board();
 
-  Snapshot (std::string (&aRows)[10]);
+  Board (std::string (&aRows)[10]);
 
-  virtual ~Snapshot();
+  virtual ~Board();
 
   bool isGridEmpty();
 
-  Snapshot deleteGroup(int aIndex);
+  Board deleteGroup(int aIndex);
 
-  Snapshot deleteGroupAt(Location aLocation);
+  Board deleteGroupAt(Location aLocation);
 
   void deleteGroup(Group &aGroup);
 
@@ -40,7 +40,7 @@ private:
 
   int groupSeqNum;
 
-  Snapshot(Cell (&aGrid)[ROWS][COLS]);
+  Board(Cell (&aGrid)[ROWS][COLS]);
 
   void buildGroups();
   void buildGroup(Location aLocation,Group &aGroup);
@@ -52,4 +52,4 @@ private:
   void clearGroups();
 };
 
-#endif /* SNAPSHOT_HH_ */
+#endif /* BOARD_HH_ */

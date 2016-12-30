@@ -1,14 +1,15 @@
+#include "Board.hh"
+
 #include <iostream>
 #include "GridUtil.hh"
-#include "Snapshot.hh"
 #include "Util.hh"
 
-Snapshot::Snapshot()
+Board::Board()
 {
   groupSeqNum = NO_GROUP;
 }
 
-Snapshot::Snapshot(std::string (&aRows)[10])
+Board::Board(std::string (&aRows)[10])
 {
   groupSeqNum = NO_GROUP;
 
@@ -29,17 +30,17 @@ Snapshot::Snapshot(std::string (&aRows)[10])
 /*
  * Constructor to build snapshot starting with...
  */
-Snapshot::Snapshot(Cell (&aGrid)[ROWS][COLS])
+Board::Board(Cell (&aGrid)[ROWS][COLS])
 {
   groupSeqNum = NO_GROUP;
   memcpy(grid, aGrid, sizeof(aGrid));
 }
 
-Snapshot::~Snapshot()
+Board::~Board()
 {
 }
 
-bool Snapshot::isGridEmpty()
+bool Board::isGridEmpty()
 {
   for (int i = 0; i < COLS; i++)
   {
@@ -49,7 +50,7 @@ bool Snapshot::isGridEmpty()
   return true;
 }
 
-Snapshot Snapshot::deleteGroup(int aIndex)
+Board Board::deleteGroup(int aIndex)
 {
   if (aIndex < 0 || aIndex >= groupList.size())
   {
@@ -57,7 +58,7 @@ Snapshot Snapshot::deleteGroup(int aIndex)
     exit(1);
   }
 
-  Snapshot tSnapshot(grid);
+  Board tSnapshot(grid);
 
   Group tGroup = groupList[aIndex];
 
@@ -68,9 +69,9 @@ Snapshot Snapshot::deleteGroup(int aIndex)
 }
 
 //TODO checks for valid 2+ group
-Snapshot Snapshot::deleteGroupAt(Location aLocation)
+Board Board::deleteGroupAt(Location aLocation)
 {
-  Snapshot tSnapshot(grid);
+  Board tSnapshot(grid);
 
   Group tGroup = getGroupAt(groupList,aLocation);
 
@@ -88,7 +89,7 @@ Snapshot Snapshot::deleteGroupAt(Location aLocation)
     return tSnapshot;
 }
 
-void Snapshot::clearGroups()
+void Board::clearGroups()
 {
   groupSeqNum = NO_GROUP; //TODO
 
@@ -99,7 +100,7 @@ void Snapshot::clearGroups()
   groupList.clear();
 }
 
-void Snapshot::buildGroups()
+void Board::buildGroups()
 {
   clearGroups();
 
@@ -122,7 +123,7 @@ void Snapshot::buildGroups()
   }
 }
 
-void Snapshot::buildGroup(Location aLocation,Group &aGroup)
+void Board::buildGroup(Location aLocation,Group &aGroup)
 {
   Cell &tCell = grid[aLocation.row][aLocation.col];
 
@@ -152,7 +153,7 @@ void Snapshot::buildGroup(Location aLocation,Group &aGroup)
   extendGroup(tLocation,tColor,aGroup);
 }
 
-void Snapshot::extendGroup(Location aLocation,int aColor,Group &aGroup)
+void Board::extendGroup(Location aLocation,int aColor,Group &aGroup)
 {
   if (aLocation.isValid())
   {
@@ -169,12 +170,12 @@ void Snapshot::extendGroup(Location aLocation,int aColor,Group &aGroup)
   }
 }
 
-bool Snapshot::isColumnEmpty(int aCol)
+bool Board::isColumnEmpty(int aCol)
 {
   return (grid[ROWS-1][aCol].empty ? true:false);
 }
 
-void Snapshot::normalizeColumns()
+void Board::normalizeColumns()
 {
   for (int tCol = COLS-2; tCol >= 0; tCol--)
   {
@@ -189,7 +190,7 @@ void Snapshot::normalizeColumns()
  * TODO can improve performance by keeping track of number of columns deleted
  * and not repeating empty end columns.
  */
-void Snapshot::deleteColumn(int aCol)
+void Board::deleteColumn(int aCol)
 {
   for (int tCol = aCol; tCol < COLS-1; tCol++)
   {
@@ -207,7 +208,7 @@ void Snapshot::deleteColumn(int aCol)
   }
 }
 
-void Snapshot::deleteGroup(Group &aGroup)
+void Board::deleteGroup(Group &aGroup)
 {
   for (int tCol = 0; tCol < COLS; tCol++)
   {
@@ -233,7 +234,7 @@ void Snapshot::deleteGroup(Group &aGroup)
   normalizeColumns();
 }
 
-int Snapshot::getColorAt(Location aLocation)
+int Board::getColorAt(Location aLocation)
 {
   if (aLocation.isValid())
   {
@@ -245,7 +246,7 @@ int Snapshot::getColorAt(Location aLocation)
   }
 }
 
-Group Snapshot::getGroupAt(GroupList &aGroups,Location aLocation)
+Group Board::getGroupAt(GroupList &aGroups,Location aLocation)
 {
   Group tGroup;
 
@@ -271,12 +272,12 @@ Group Snapshot::getGroupAt(GroupList &aGroups,Location aLocation)
   return tGroup;
 }
 
-int Snapshot::getGroupIdFromIndex(int aGroupIndex)
+int Board::getGroupIdFromIndex(int aGroupIndex)
 {
   return groupList[aGroupIndex].id;
 }
 
-void Snapshot::printBoard(const char *aHeader,int aFormat)
+void Board::printBoard(const char *aHeader,int aFormat)
 {
   if (aHeader != NULL)
   {
@@ -303,7 +304,7 @@ void Snapshot::printBoard(const char *aHeader,int aFormat)
       << groupList.getNumTrivialGroups() << std::endl;
 }
 
-void Snapshot::printGroups(const char *aHeader)
+void Board::printGroups(const char *aHeader)
 {
   if (aHeader != NULL)
   {
