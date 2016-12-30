@@ -25,13 +25,22 @@ Snapshot::Snapshot(std::string (&aRows)[10])
   buildGroups();
 }
 
+/*
+ * Constructor to build snapshot starting with...
+ */
+Snapshot::Snapshot(Cell (&aGrid)[ROWS][COLS])
+{
+  groupSeqNum = NO_GROUP;
+  memcpy(grid, aGrid, sizeof(aGrid));
+}
+
 Snapshot::~Snapshot()
 {
 }
 
 Snapshot Snapshot::deleteGroupAt(Location aLocation)
 {
-  Snapshot tSnapshot = *this; //TODO ok? copies groups, not needed
+  Snapshot tSnapshot(grid);
 
   Group tGroup = getGroupAt(groupList,aLocation);
 
@@ -46,14 +55,6 @@ Snapshot Snapshot::deleteGroupAt(Location aLocation)
     tSnapshot.deleteGroup(tGroup);
     tSnapshot.clearGroups();
     tSnapshot.buildGroups();
-
-#if 0
-  tSnapshot1.deleteGroupAt(tSnapshot1.groupList,Location(5,5));
-//  tSnapshot1.deleteGroupAt(tSnapshot1.groupList,Location(5,2));
-  tSnapshot1.clearGroups();
-  tSnapshot1.buildGroups();
-  tSnapshot1.printBoard("\nnew groups after delete and rebuild groups");
-#endif
 
     return tSnapshot;
 }

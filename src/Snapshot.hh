@@ -42,6 +42,8 @@ private:
 
   int groupSeqNum;
 
+  Snapshot(Cell (&aGrid)[ROWS][COLS]);
+
   void deleteColumn(int aCol);
 };
 
