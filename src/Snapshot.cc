@@ -271,6 +271,11 @@ Group Snapshot::getGroupAt(GroupList &aGroups,Location aLocation)
   return tGroup;
 }
 
+int Snapshot::getGroupIdFromIndex(int aGroupIndex)
+{
+  return groupList[aGroupIndex].id;
+}
+
 void Snapshot::printBoard(const char *aHeader)
 {
   if (aHeader != NULL)

@@ -28,6 +28,8 @@ public:
 
   Group getGroupAt(GroupList &aGroups,Location aLocation);
 
+  int getGroupIdFromIndex(int aGroupIndex);
+
   void printBoard(const char *aHeader = NULL);
 
   void printGroups(const char *aHeader = NULL);

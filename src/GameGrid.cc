@@ -1,6 +1,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <iostream>
+#include <sstream>
 #include "brickpop_const.h"
 #include "GridUtil.hh"
 #include "GameGrid.hh"
@@ -56,16 +57,23 @@ void GameGrid::replay(Snapshot aSnapshot,std::vector<int> aGroupsReduced)
   int i = 0;
   while (aGroupsReduced.size() > 0)
   {
-    int tGroupIndex = aGroupsReduced.back();
-    aGroupsReduced.pop_back();
+    int tGroupIndex = aGroupsReduced.front();
+    aGroupsReduced.erase(aGroupsReduced.begin());
+    std::cout << "Step " << ++i << ": deleting groupId "
+        << tSnapshot.getGroupIdFromIndex(tGroupIndex) << std::endl;
     tSnapshot = tSnapshot.deleteGroup(tGroupIndex);
-    std::cout << "Step " << ++i << std::endl;
     tSnapshot.printBoard();
   }
 }
 
+static int counter;
+
 int GameGrid::reduce(Snapshot &aSnapshot,std::vector<int> &aGroupsReduced)
 {
+  std::stringstream tStr;
+  tStr << ++counter << ": ";
+  Util::printVector(aGroupsReduced,tStr.str().c_str());
+
   for (int i = 0; i < aSnapshot.groupList.size(); i++)
   {
     if (aSnapshot.groupList[i].locations.size() < 2) //TODO
