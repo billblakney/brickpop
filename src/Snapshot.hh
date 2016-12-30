@@ -16,6 +16,8 @@ public:
 
   Snapshot();
 
+  Snapshot (std::string (&aRows)[10]);
+
   virtual ~Snapshot();
 
   void clearGroups(GroupList &aGroups);

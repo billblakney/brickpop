@@ -11,8 +11,6 @@ class GameGrid
 {
 public:
 
-  Snapshot snapshot;
-
   GameGrid();
 
   virtual ~GameGrid();

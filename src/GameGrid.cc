@@ -15,21 +15,47 @@ GameGrid::~GameGrid()
 
 void GameGrid::buildGrid()
 {
-  for (int r = 0; r < ROWS; r++)
-  {
-    for (int c = 0; c < COLS; c++)
-    {
-      Cell &tCell = snapshot.grid[r][c];
-      tCell.empty = false;
-      tCell.color = 'a' + c; //TODO
-      tCell.group = NO_GROUP;
-    }
-  }
+//  std::string tColorsRow0 = "abcdexghij";
+//  std::string tColorsRow1 = "abcdexghij";
+//  std::string tColorsRow2 = "abcdefghij";
+//  std::string tColorsRow3 = "abcdefghij";
+//  std::string tColorsRow4 = "abcdefghij";
+//  std::string tColorsRow5 = "abcdefghij";
+//  std::string tColorsRow6 = "abcdefghij";
+//  std::string tColorsRow7 = "abcdefghij";
+//  std::string tColorsRow8 = "abcdeyghij";
+//  std::string tColorsRow9 = "abcdeyghij";
 
-  snapshot.grid[9][5].color = 'x';
-  snapshot.grid[8][5].color = 'x';
-  snapshot.grid[0][5].color = 'y';
-  snapshot.grid[1][5].color = 'y';
+  std::string tRows[10] = {
+      "abcdexghij",
+      "abcdexghij",
+      "abcdefghij",
+      "abcdefghij",
+      "abcdefghij",
+      "abcdefghij",
+      "abcdefghij",
+      "abcdefghij",
+      "abcdeyghij",
+      "abcdeyghij"
+  };
+
+  Snapshot snapshot(tRows);
+
+//  for (int r = 0; r < ROWS; r++)
+//  {
+//    for (int c = 0; c < COLS; c++)
+//    {
+//      Cell &tCell = snapshot.grid[r][c];
+//      tCell.empty = false;
+//      tCell.color = 'a' + c; //TODO
+//      tCell.group = NO_GROUP;
+//    }
+//  }
+//
+//  snapshot.grid[9][5].color = 'x';
+//  snapshot.grid[8][5].color = 'x';
+//  snapshot.grid[0][5].color = 'y';
+//  snapshot.grid[1][5].color = 'y';
 
   printBoard(snapshot,"before groups");
 
