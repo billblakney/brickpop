@@ -13,7 +13,7 @@ GameGrid::~GameGrid()
 {
 }
 
-void GameGrid::buildGrid()
+void GameGrid::solve(std::string (&aColors)[ROWS])
 {
 #if 0
   std::string tRows[10] = {
@@ -29,7 +29,7 @@ void GameGrid::buildGrid()
       "abcdeyghij"
   };
 #endif
-#if 1
+#if 0
   std::string tRows[10] = {
       "abcdexghij",
       "abcdexghij",
@@ -44,7 +44,7 @@ void GameGrid::buildGrid()
   };
 #endif
 
-  Snapshot snapshot(tRows);
+  Snapshot snapshot(aColors);
   snapshot.printBoard("\ninitial snapshot");
 
 //#define TEST1

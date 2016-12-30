@@ -15,7 +15,7 @@ public:
 
   virtual ~GameGrid();
 
-  void buildGrid();
+  void solve(std::string (&aColors)[ROWS]);
 
   void resetGrid();
 
