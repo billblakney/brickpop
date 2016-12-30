@@ -1,6 +1,7 @@
 #include <iostream>
 #include "GridUtil.hh"
 #include "Snapshot.hh"
+#include "Util.hh"
 
 Snapshot::Snapshot()
 {
@@ -211,6 +212,7 @@ void Snapshot::deleteGroup(Group &aGroup)
   for (int tCol = 0; tCol < COLS; tCol++)
   {
     std::vector<int> tRowsToDelete = aGroup.getRowsForCol(tCol);
+//Util::printVector(tRowsToDelete,"to delete:");
 
     std::vector<int>::iterator tIter;
     for (tIter = tRowsToDelete.begin(); tIter != tRowsToDelete.end(); tIter++ )

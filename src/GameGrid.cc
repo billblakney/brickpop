@@ -4,6 +4,9 @@
 #include "brickpop_const.h"
 #include "GridUtil.hh"
 #include "GameGrid.hh"
+#include "Util.hh"
+
+static bool debug = false;
 
 GameGrid::GameGrid()
 {
@@ -15,37 +18,9 @@ GameGrid::~GameGrid()
 
 void GameGrid::solve(std::string (&aColors)[ROWS])
 {
-#if 0
-  std::string tRows[10] = {
-      "abcdexghij",
-      "abcdexghij",
-      "abcdefghij",
-      "abcdefghij",
-      "abcdefghij",
-      "abcdefghij",
-      "abcdefghij",
-      "abcdefghij",
-      "abcdeyghij",
-      "abcdeyghij"
-  };
-#endif
-#if 0
-  std::string tRows[10] = {
-      "abcdexghij",
-      "abcdexghij",
-      "abcdefghij",
-      "abjjefghij",
-      "abjjefghij",
-      "abcdefghij",
-      "abcdefgmij",
-      "abcdefgmmm",
-      "abcdeyghij",
-      "abcdeyghij"
-  };
-#endif
-
   Snapshot snapshot(aColors);
-  snapshot.printBoard("\ninitial snapshot");
+  if (debug)
+    snapshot.printBoard("\ninitial snapshot");
 
 //#define TEST1
 //#define TEST2
@@ -63,9 +38,30 @@ void GameGrid::solve(std::string (&aColors)[ROWS])
   int tReturn = reduce(snapshot,tGroupsReduced);
 
   if (tReturn == 0)
-    printVector(tGroupsReduced,"Solve SUCCEEDED");
+  {
+    Util::printVector(tGroupsReduced,"Solve SUCCEEDED");
+    replay(snapshot,tGroupsReduced);
+  }
   else if (tReturn == 1)
-    printVector(tGroupsReduced,"Solve failed");
+  {
+    Util::printVector(tGroupsReduced,"Solve failed");
+  }
+}
+
+void GameGrid::replay(Snapshot aSnapshot,std::vector<int> aGroupsReduced)
+{
+  Snapshot tSnapshot = aSnapshot;
+  tSnapshot.printBoard("Original board:");
+
+  int i = 0;
+  while (aGroupsReduced.size() > 0)
+  {
+    int tGroupIndex = aGroupsReduced.back();
+    aGroupsReduced.pop_back();
+    tSnapshot = tSnapshot.deleteGroup(tGroupIndex);
+    std::cout << "Step " << ++i << std::endl;
+    tSnapshot.printBoard();
+  }
 }
 
 int GameGrid::reduce(Snapshot &aSnapshot,std::vector<int> &aGroupsReduced)
@@ -78,21 +74,25 @@ int GameGrid::reduce(Snapshot &aSnapshot,std::vector<int> &aGroupsReduced)
     aGroupsReduced.push_back(i);
 
     Snapshot tNextSnapshot = aSnapshot.deleteGroup(i);
-//    tNextSnapshot.printBoard();
+    if (debug)
+      tNextSnapshot.printBoard();
 
     if (tNextSnapshot.isGridEmpty())
     {
-      printVector(aGroupsReduced,"SOLVED!!!");
+      if (debug)
+        Util::printVector(aGroupsReduced,"SOLVED!!!");
       return 0;
     }
     else if (tNextSnapshot.groupList.getNumNonTrivialGroups() < 1)
     {
-      printVector(aGroupsReduced,"HIT DEAD END");
+      if (debug)
+        Util::printVector(aGroupsReduced,"HIT DEAD END");
       aGroupsReduced.pop_back();
     }
     else
     {
-      printVector(aGroupsReduced,"Continuing with solve");
+      if (debug)
+        Util::printVector(aGroupsReduced,"Continuing with solve");
       int tReturn = reduce(tNextSnapshot,aGroupsReduced);
       if (tReturn == 0)
         return 0;
@@ -101,16 +101,4 @@ int GameGrid::reduce(Snapshot &aSnapshot,std::vector<int> &aGroupsReduced)
     }
   }
   return 1;
-}
-
-void GameGrid::printVector(std::vector<int> &aVector,const char *aHeader)
-{
-  std::cout << aHeader << std::endl;
-
-  std::vector<int>::iterator tIter;
-  for (tIter = aVector.begin(); tIter != aVector.end(); tIter++)
-  {
-    std::cout << " " << *tIter;
-  }
-  std::cout << std::endl;
 }

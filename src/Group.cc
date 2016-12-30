@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <sstream>
 #include "Group.hh"
 
@@ -37,6 +38,8 @@ bool Group::contains(Location aLocation)
   return false;
 }
 
+// sorted from smallest to biggest (deleteGroup alg depends on this
+// think about it and document it
 std::vector<int> Group::getRowsForCol(int aCol)
 {
   std::vector<int> tCols;
@@ -47,6 +50,9 @@ std::vector<int> Group::getRowsForCol(int aCol)
     if (tIter->col == aCol)
       tCols.push_back(tIter->row);
   }
+
+  sort(tCols.begin(),tCols.end());
+
   return tCols;
 }
 

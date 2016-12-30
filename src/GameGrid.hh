@@ -17,6 +17,8 @@ public:
 
   void solve(std::string (&aColors)[ROWS]);
 
+  void replay(Snapshot aSnapshot,std::vector<int> aGroupsReduced);
+
   void resetGrid();
 
   int reduce(Snapshot &aSnapshot,std::vector<int> &aGroupsReduced);
