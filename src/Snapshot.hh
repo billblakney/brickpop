@@ -18,6 +18,11 @@ public:
 
   virtual ~Snapshot();
 
+  void clearGroups(GroupList &aGroups);
+  GroupList buildGroups();
+  void buildGroup(Location aLocation,Group &aGroup);
+  void extendGroup(Location aLocation,int aColor,Group &aGroup);
+
   void deleteGroupAt(GroupList &aGroup,Location aLocation);
   void deleteGroup(Group &aGroup);
   Group getGroupAt(GroupList &aGroups,Location aLocation);
@@ -28,6 +33,8 @@ public:
   void normalizeColumns();
 
 private:
+
+  int groupSeqNum;
 
   void deleteColumn(int aCol);
 };

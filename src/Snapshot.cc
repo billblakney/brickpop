@@ -1,12 +1,97 @@
 #include <iostream>
+#include "GridUtil.hh"
 #include "Snapshot.hh"
 
 Snapshot::Snapshot()
 {
+  groupSeqNum = NO_GROUP;
 }
 
 Snapshot::~Snapshot()
 {
+}
+
+void Snapshot::clearGroups(GroupList &aGroups)
+{
+  groupSeqNum = NO_GROUP; //TODO
+
+  for (int r = 0; r < ROWS; r++)
+    for (int c = 0; c < COLS; c++)
+      grid[r][c].group = NO_GROUP;
+
+  aGroups.clear();
+}
+
+GroupList Snapshot::buildGroups()
+{
+  GroupList tGroups;
+
+  for (int r = 0; r < ROWS; r++)
+  {
+    for (int c = 0; c < COLS; c++)
+    {
+      Location tLocation(r,c);
+      Cell &tCell = grid[r][c];
+      if (!tCell.empty && tCell.group == NO_GROUP)
+      {
+        int tGroupIdx = ++groupSeqNum;
+        tCell.group = tGroupIdx;
+        Group tGroup(tGroupIdx);
+        tGroup.addLocation(tLocation);
+        buildGroup(tLocation,tGroup);
+        tGroups.push_back(tGroup);
+      }
+    }
+  }
+
+  return tGroups;
+}
+
+void Snapshot::buildGroup(Location aLocation,Group &aGroup)
+{
+  Cell &tCell = grid[aLocation.row][aLocation.col];
+
+  if (tCell.empty)
+  {
+    return;
+  }
+
+  int tColor = tCell.color;
+
+//  std::cout << "building group for cell row,col,color,group: "
+//      << aCell->location.row << "," << aCell->location.col << ","
+//      << aCell->color << "," << aCell->group << std::endl;
+
+  Location tLocation;
+
+  tLocation = GridUtil::getLocationNorth(aLocation);
+  extendGroup(tLocation,tColor,aGroup);
+
+  tLocation = GridUtil::getLocationEast(aLocation);
+  extendGroup(tLocation,tColor,aGroup);
+
+  tLocation = GridUtil::getLocationSouth(aLocation);
+  extendGroup(tLocation,tColor,aGroup);
+
+  tLocation = GridUtil::getLocationWest(aLocation);
+  extendGroup(tLocation,tColor,aGroup);
+}
+
+void Snapshot::extendGroup(Location aLocation,int aColor,Group &aGroup)
+{
+  if (aLocation.isValid())
+  {
+    Cell &tCell = grid[aLocation.row][aLocation.col];
+    if (!tCell.empty && tCell.group == NO_GROUP)
+    {
+      if (tCell.color == aColor)
+      {
+        tCell.group = aGroup.id;
+        aGroup.addLocation(aLocation);
+        buildGroup(aLocation,aGroup);
+      }
+    }
+  }
 }
 
 bool Snapshot::isColumnEmpty(int aCol)
