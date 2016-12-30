@@ -53,12 +53,12 @@ Snapshot Snapshot::deleteGroupAt(Location aLocation)
 //  std::cout << "Deleting group with id " << tGroup.id << " at " << aLocation.toString() << std::endl;
 
     tSnapshot.deleteGroup(tGroup);
-    tSnapshot.clearGroups();
     tSnapshot.buildGroups();
 
     return tSnapshot;
 }
 
+#ifdef USE_CLEAR_GROUPS
 void Snapshot::clearGroups()
 {
   groupSeqNum = NO_GROUP; //TODO
@@ -69,6 +69,7 @@ void Snapshot::clearGroups()
 
   groupList.clear();
 }
+#endif
 
 void Snapshot::buildGroups()
 {

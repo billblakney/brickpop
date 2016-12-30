@@ -20,7 +20,6 @@ public:
 
   virtual ~Snapshot();
 
-  void clearGroups();
   void buildGroups();
   void buildGroup(Location aLocation,Group &aGroup);
   void extendGroup(Location aLocation,int aColor,Group &aGroup);
@@ -45,6 +44,9 @@ private:
   Snapshot(Cell (&aGrid)[ROWS][COLS]);
 
   void deleteColumn(int aCol);
+#ifdef USE_CLEAR_GROUPS
+  void clearGroups();
+#endif
 };
 
 #endif /* SNAPSHOT_HH_ */
